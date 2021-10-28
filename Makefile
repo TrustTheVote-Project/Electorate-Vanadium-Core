@@ -7,6 +7,9 @@
 
 PROJECT := vanadium
 
+PIP_REQ_MAIN := requirements.txt
+PIP_REQ_DEV  := requirements-dev.txt
+
 # --- Rules
 
 help:
@@ -30,6 +33,12 @@ help:
 	@echo "  clean-sdist - Remove built tarballs."
 	@echo "  clean-wheel - Remove built wheels."
 	@echo ""
+	@echo "Pip requirements:"
+	@echo ""
+	@echo "  pip-requirements      - Export Pip requirements files with hashes."
+	@echo "  pip-requirements-base - Export Pip requirements files without hashes."
+	@echo ""
+
 
 # Project builds
 
@@ -59,3 +68,14 @@ build-wheel:
 clean-wheel:
 	rm -f dist/$(PROJECT)*.whl
 	rmdir --ignore-fail-on-non-empty dist
+
+
+# Pip requirements
+
+pip-requirements:
+	poetry export -f requirements.txt > $(PIP_REQ_MAIN)
+	poetry export --dev -f requirements.txt > $(PIP_REQ_DEV)
+
+pip-requirements-base:
+	poetry export --without-hashes -f requirements.txt > $(PIP_REQ_MAIN)
+	poetry export --without-hashes --dev -f requirements.txt > $(PIP_REQ_DEV)
