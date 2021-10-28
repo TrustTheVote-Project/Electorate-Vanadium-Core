@@ -19,12 +19,24 @@ starlette = "0.14.2"
 pydantic = "1.8.2"
 uvicorn = { version = "0.15.0", extras = [ "standard" ] }
 
+# TODO: Add database libraries.
+
 [tool.poetry.dev-dependencies]
 
 # Testing
 pytest = "^6.2.3"
 coverage = "^5.5"
 tox = "^3.23.0"
+
+# TBD: Turn on later
+
+# Code quality
+### black = "21.8.b0"
+### isort = "5.8.0"
+
+# Documentation
+### mkdocs = "1.1.2"
+### sphinx = "3.0.4"
 
 [build-system]
 
