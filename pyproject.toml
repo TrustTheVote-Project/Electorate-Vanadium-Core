@@ -1,0 +1,32 @@
+[tool.poetry]
+
+name = "electos-electorate-vanadium"
+version = "0.0.1"
+description = "Web service for ElectOS voter data warehouse"
+authors = ["Ion Y <ion@osetinstitute.org>"]
+packages = [
+    { include = "vanadium", from = "src/electos" }
+]
+
+[tool.poetry.dependencies]
+
+# TODO: Switch to 3.7 if testing shows it's possible.
+python = "^3.8"
+
+# Pin to specific versions known to work together
+fastapi = "0.68.2"
+starlette = "0.14.2"
+pydantic = "1.8.2"
+uvicorn = { version = "0.15.0", extras = [ "standard" ] }
+
+[tool.poetry.dev-dependencies]
+
+# Testing
+pytest = "^6.2.3"
+coverage = "^5.5"
+tox = "^3.23.0"
+
+[build-system]
+
+requires = ["poetry>=1.0.0"]
+build-backend = "poetry.masonry.api"
