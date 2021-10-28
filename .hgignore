@@ -1,0 +1,31 @@
+# --- General
+
+syntax: rootglob
+
+.local/
+
+# --- Python
+
+syntax: glob
+
+*.py[cdo]
+__pycache__
+*.so
+
+# Builds
+
+build/
+dist/
+*.egg
+*.egg-info
+.venv
+
+# Tests
+
+.cache
+.coverage
+.coverage.*
+.hypothesis/
+.pytest_cache/
+.tox/
+
