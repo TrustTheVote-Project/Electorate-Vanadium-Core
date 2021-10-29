@@ -1,0 +1,8 @@
+[run]
+data_file = .local/coverage/coverage-data
+
+[html]
+directory = .local/coverage/html
+
+[report]
+omit = */.local/*
