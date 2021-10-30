@@ -10,6 +10,11 @@ PROJECT := vanadium
 PIP_REQ_MAIN := requirements.txt
 PIP_REQ_DEV  := requirements-dev.txt
 
+DOCKER_TAG  := $(PROJECT)
+DOCKER_APP  := $(PROJECT)-app
+DOCKER_HOST := localhost
+DOCKER_PORT := 8080
+
 # --- Rules
 
 help:
@@ -38,7 +43,11 @@ help:
 	@echo "  pip-requirements      - Export Pip requirements files with hashes."
 	@echo "  pip-requirements-base - Export Pip requirements files without hashes."
 	@echo ""
-
+	@echo "Docker image:"
+	@echo ""
+	@echo "  build-docker-image - Build Docker image from Dockerfile"
+	@echo "  run-docker-image   - Run Docker container"
+	@echo ""
 
 # Project builds
 
@@ -79,3 +88,12 @@ pip-requirements:
 pip-requirements-base:
 	poetry export --without-hashes -f requirements.txt > $(PIP_REQ_MAIN)
 	poetry export --without-hashes --dev -f requirements.txt > $(PIP_REQ_DEV)
+
+
+# Docker
+
+build-docker-image:
+	docker build -t "$(DOCKER_TAG)" .
+
+run-docker-image: build-docker-image
+	docker run -it --rm --name "$(DOCKER_APP)" -p "$(DOCKER_PORT):$(DOCKER_PORT)" "$(DOCKER_TAG)"
