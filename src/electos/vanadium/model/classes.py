@@ -235,21 +235,21 @@ class Election(BaseModel):
     StartDate: date
 
 
-class Address(BaseModel):
-
-    __root__: Union[
-        addr.CommunityAddressType,
-        addr.FourNumberAddressRangeType,
-        addr.GeneralAddressClassType,
-        addr.IntersectionAddressType,
-        addr.LandmarkAddressType,
-        addr.NumberedThoroughfareAddressType,
-        addr.TwoNumberAddressRangeType,
-        addr.USPSGeneralDeliveryOfficeType,
-        addr.USPSPostalDeliveryBoxType,
-        addr.USPSPostalDeliveryRouteType,
-        addr.UnnumberedThoroughfareAddressType,
-    ]
+# class Address(BaseModel):
+#
+#     __root__: Union[
+#         addr.CommunityAddressType,
+#         addr.FourNumberAddressRangeType,
+#         addr.GeneralAddressClassType,
+#         addr.IntersectionAddressType,
+#         addr.LandmarkAddressType,
+#         addr.NumberedThoroughfareAddressType,
+#         addr.TwoNumberAddressRangeType,
+#         addr.USPSGeneralDeliveryOfficeType,
+#         addr.USPSPostalDeliveryBoxType,
+#         addr.USPSPostalDeliveryRouteType,
+#         addr.UnnumberedThoroughfareAddressType,
+#     ]
 
 
 class ElectionBasedBallotRequest(BaseModel):
@@ -263,7 +263,7 @@ class ElectionBasedBallotRequest(BaseModel):
         None, min_items=0
     )
     Election: Election
-    MailForwardingAddress: Optional[Address] = None
+    # MailForwardingAddress: Optional[Address] = None
 
 
 class Location(BaseModel):
@@ -273,7 +273,7 @@ class Location(BaseModel):
 
     _type: Literal["VRI.Location"] = "VRI.Location"
 
-    Address: Optional[Address] = None
+    # Address: Optional[Address] = None
     Directions: Optional[str] = None
     LatLng: Optional[LatLng] = None
 
@@ -288,7 +288,7 @@ class PermanentBallotRequest(BaseModel):
     BallotReceiptPreference: Optional[List[BallotReceiptMethod]] = Field(
         None, min_items=0
     )
-    MailForwardingAddress: Optional[Address] = None
+    # MailForwardingAddress: Optional[Address] = None
 
 
 class ReportingUnit(BaseModel):
@@ -313,7 +313,7 @@ class RequestHelper(BaseModel):
 
     _type: Literal["VRI.RequestHelper"] = "VRI.RequestHelper"
 
-    Address: Optional[Address] = None
+    # Address: Optional[Address] = None
     Name: Optional[Name] = None
     Phone: Optional[PhoneContactMethod] = None
     Signature: Optional[Signature] = None
@@ -327,7 +327,7 @@ class RequestProxy(BaseModel):
 
     _type: Literal["VRI.RequestProxy"] = "VRI.RequestProxy"
 
-    Address: Optional[Address] = None
+    # Address: Optional[Address] = None
     Name: Optional[str] = None
     OriginTransactionId: Optional[str] = None
     OtherType: Optional[str] = None
@@ -347,7 +347,7 @@ class TemporalBallotRequest(BaseModel):
         None, min_items=0
     )
     EndDate: date
-    MailForwardingAddress: Optional[Address] = None
+    # MailForwardingAddress: Optional[Address] = None
     StartDate: date
 
 
@@ -364,13 +364,13 @@ class Voter(BaseModel):
     DateOfBirth: Optional[date] = None
     Ethnicity: Optional[str] = None
     Gender: Optional[str] = None
-    MailingAddress: Optional[Address] = None
+    # MailingAddress: Optional[Address] = None
     Name: Name
     Party: Optional[Party] = None
     PreviousName: Optional[Name] = None
-    PreviousResidenceAddress: Optional[Address] = None
+    # PreviousResidenceAddress: Optional[Address] = None
     PreviousSignature: Optional[Signature] = None
-    ResidenceAddress: Address
+    # ResidenceAddress: Address
     ResidenceAddressIsMailingAddress: Optional[bool] = None
     Signature: Optional[Signature] = None
     VoterClassification: Optional[List[VoterClassification]] = Field(None, min_items=0)
