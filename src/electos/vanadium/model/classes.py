@@ -28,7 +28,7 @@ class File(BaseModel):
 
     _type: Literal["VRI.File"] = "VRI.File"
 
-    data: str
+    data: bytes
     file_name: Optional[str] = None
     mime_type: Optional[str] = None
 
@@ -40,7 +40,7 @@ class Image(BaseModel):
 
     _type: Literal["VRI.Image"] = "VRI.Image"
 
-    data: str
+    data: bytes
     file_name: Optional[str] = None
     mime_type: Optional[str] = None
 
