@@ -14,212 +14,212 @@ from enum import Enum
 
 class AssertionValue(Enum):
 
-    no = "no"
-    other = "other"
-    unknown = "unknown"
-    yes = "yes"
+    NO = "no"
+    OTHER = "other"
+    UNKNOWN = "unknown"
+    YES = "yes"
 
 
 class BallotReceiptMethod(Enum):
 
-    email = "email"
-    email_or_online = "email-or-online"
-    fax = "fax"
-    mail = "mail"
-    online = "online"
+    EMAIL = "email"
+    EMAIL_OR_ONLINE = "email-or-online"
+    FAX = "fax"
+    MAIL = "mail"
+    ONLINE = "online"
 
 
 class ContactMethodType(Enum):
 
-    email = "email"
-    other = "other"
-    phone = "phone"
+    EMAIL = "email"
+    OTHER = "other"
+    PHONE = "phone"
 
 
 class IdentifierType(Enum):
 
-    fips = "fips"
-    local_level = "local-level"
-    national_level = "national-level"
-    ocd_id = "ocd-id"
-    other = "other"
-    state_level = "state-level"
+    FIPS = "fips"
+    LOCAL_LEVEL = "local-level"
+    NATIONAL_LEVEL = "national-level"
+    OCD_ID = "ocd-id"
+    OTHER = "other"
+    STATE_LEVEL = "state-level"
 
 
 class PhoneCapability(Enum):
 
-    fax = "fax"
-    mms = "mms"
-    sms = "sms"
-    voice = "voice"
+    FAX = "fax"
+    MMS = "mms"
+    SMS = "sms"
+    VOICE = "voice"
 
 
 class ReportingUnitType(Enum):
 
-    ballot_batch = "ballot-batch"
-    ballot_style_area = "ballot-style-area"
-    borough = "borough"
-    city = "city"
-    city_council = "city-council"
-    combined_precinct = "combined-precinct"
-    congressional = "congressional"
-    county = "county"
-    county_council = "county-council"
-    drop_box = "drop-box"
-    judicial = "judicial"
-    municipality = "municipality"
-    other = "other"
-    polling_place = "polling-place"
-    precinct = "precinct"
-    school = "school"
-    special = "special"
-    split_precinct = "split-precinct"
-    state = "state"
-    state_house = "state-house"
-    state_senate = "state-senate"
-    town = "town"
-    township = "township"
-    utility = "utility"
-    village = "village"
-    vote_center = "vote-center"
-    ward = "ward"
-    water = "water"
+    BALLOT_BATCH = "ballot-batch"
+    BALLOT_STYLE_AREA = "ballot-style-area"
+    BOROUGH = "borough"
+    CITY = "city"
+    CITY_COUNCIL = "city-council"
+    COMBINED_PRECINCT = "combined-precinct"
+    CONGRESSIONAL = "congressional"
+    COUNTY = "county"
+    COUNTY_COUNCIL = "county-council"
+    DROP_BOX = "drop-box"
+    JUDICIAL = "judicial"
+    MUNICIPALITY = "municipality"
+    OTHER = "other"
+    POLLING_PLACE = "polling-place"
+    PRECINCT = "precinct"
+    SCHOOL = "school"
+    SPECIAL = "special"
+    SPLIT_PRECINCT = "split-precinct"
+    STATE = "state"
+    STATE_HOUSE = "state-house"
+    STATE_SENATE = "state-senate"
+    TOWN = "town"
+    TOWNSHIP = "township"
+    UTILITY = "utility"
+    VILLAGE = "village"
+    VOTE_CENTER = "vote-center"
+    WARD = "ward"
+    WATER = "water"
 
 
 class RequestError(Enum):
 
-    identity_lookup_failed = "identity-lookup-failed"
-    incomplete = "incomplete"
-    ineligible = "ineligible"
-    invalid_form = "invalid-form"
-    other = "other"
+    IDENTITY_LOOKUP_FAILED = "identity-lookup-failed"
+    INCOMPLETE = "incomplete"
+    INELIGIBLE = "ineligible"
+    INVALID_FORM = "invalid-form"
+    OTHER = "other"
 
 
 class RequestForm(Enum):
 
-    fpca = "fpca"
-    nvra = "nvra"
-    other = "other"
+    FPCA = "fpca"
+    NVRA = "nvra"
+    OTHER = "other"
 
 
 class RequestMethod(Enum):
 
-    armed_forces_recruitment_office = "armed-forces-recruitment-office"
-    motor_vehicle_office = "motor-vehicle-office"
-    other = "other"
-    other_agency_designated_by_state = "other-agency-designated-by-state"
-    public_assistance_office = "public-assistance-office"
-    registration_drive_from_advocacy_group_or_political_party = (
+    ARMED_FORCES_RECRUITMENT_OFFICE = "armed-forces-recruitment-office"
+    MOTOR_VEHICLE_OFFICE = "motor-vehicle-office"
+    OTHER = "other"
+    OTHER_AGENCY_DESIGNATED_BY_STATE = "other-agency-designated-by-state"
+    PUBLIC_ASSISTANCE_OFFICE = "public-assistance-office"
+    REGISTRATION_DRIVE_FROM_ADVOCACY_GROUP_OR_POLITICAL_PARTY = (
         "registration-drive-from-advocacy-group-or-political-party"
     )
-    state_funded_agency_serving_persons_with_disabilities = (
+    STATE_FUNDED_AGENCY_SERVING_PERSONS_WITH_DISABILITIES = (
         "state-funded-agency-serving-persons-with-disabilities"
     )
-    unknown = "unknown"
-    voter_via_election_registrars_office = "voter-via-election-registrars-office"
-    voter_via_email = "voter-via-email"
-    voter_via_fax = "voter-via-fax"
-    voter_via_internet = "voter-via-internet"
-    voter_via_mail = "voter-via-mail"
+    UNKNOWN = "unknown"
+    VOTER_VIA_ELECTION_REGISTRARS_OFFICE = "voter-via-election-registrars-office"
+    VOTER_VIA_EMAIL = "voter-via-email"
+    VOTER_VIA_FAX = "voter-via-fax"
+    VOTER_VIA_INTERNET = "voter-via-internet"
+    VOTER_VIA_MAIL = "voter-via-mail"
 
 
 class RequestProxyType(Enum):
 
-    armed_forces_recruitment_office = "armed-forces-recruitment-office"
-    motor_vehicle_office = "motor-vehicle-office"
-    other = "other"
-    other_agency_designated_by_state = "other-agency-designated-by-state"
-    public_assistance_office = "public-assistance-office"
-    registration_drive_from_advocacy_group_or_political_party = (
+    ARMED_FORCES_RECRUITMENT_OFFICE = "armed-forces-recruitment-office"
+    MOTOR_VEHICLE_OFFICE = "motor-vehicle-office"
+    OTHER = "other"
+    OTHER_AGENCY_DESIGNATED_BY_STATE = "other-agency-designated-by-state"
+    PUBLIC_ASSISTANCE_OFFICE = "public-assistance-office"
+    REGISTRATION_DRIVE_FROM_ADVOCACY_GROUP_OR_POLITICAL_PARTY = (
         "registration-drive-from-advocacy-group-or-political-party"
     )
-    state_funded_agency_serving_persons_with_disabilities = (
+    STATE_FUNDED_AGENCY_SERVING_PERSONS_WITH_DISABILITIES = (
         "state-funded-agency-serving-persons-with-disabilities"
     )
 
 
 class SignatureSource(Enum):
 
-    dmv = "dmv"
-    local = "local"
-    other = "other"
-    state = "state"
-    voter = "voter"
+    DMV = "dmv"
+    LOCAL = "local"
+    OTHER = "other"
+    STATE = "state"
+    VOTER = "voter"
 
 
 class SignatureType(Enum):
 
-    dynamic = "dynamic"
-    electronic = "electronic"
-    other = "other"
+    DYNAMIC = "dynamic"
+    ELECTRONIC = "electronic"
+    OTHER = "other"
 
 
 class SuccessAction(Enum):
 
-    address_updated = "address-updated"
-    name_updated = "name-updated"
-    other = "other"
-    registration_cancelled = "registration-cancelled"
-    registration_created = "registration-created"
-    registration_updated = "registration-updated"
-    status_updated = "status-updated"
+    ADDRESS_UPDATED = "address-updated"
+    NAME_UPDATED = "name-updated"
+    OTHER = "other"
+    REGISTRATION_CANCELLED = "registration-cancelled"
+    REGISTRATION_CREATED = "registration-created"
+    REGISTRATION_UPDATED = "registration-updated"
+    STATUS_UPDATED = "status-updated"
 
 
 class VoterClassificationType(Enum):
 
-    activated_national_guard = "activated-national-guard"
-    active_duty = "active-duty"
-    active_duty_spouse_or_dependent = "active-duty-spouse-or-dependent"
-    citizen_abroad_intent_to_return = "citizen-abroad-intent-to-return"
-    citizen_abroad_never_resided = "citizen-abroad-never-resided"
-    citizen_abroad_return_uncertain = "citizen-abroad-return-uncertain"
-    deceased = "deceased"
-    declared_incompetent = "declared-incompetent"
-    eighteen_on_election_day = "eighteen-on-election-day"
-    felon = "felon"
-    other = "other"
-    permanently_denied = "permanently-denied"
-    protected_voter = "protected-voter"
-    restored_felon = "restored-felon"
-    united_states_citizen = "united-states-citizen"
+    ACTIVATED_NATIONAL_GUARD = "activated-national-guard"
+    ACTIVE_DUTY = "active-duty"
+    ACTIVE_DUTY_SPOUSE_OR_DEPENDENT = "active-duty-spouse-or-dependent"
+    CITIZEN_ABROAD_INTENT_TO_RETURN = "citizen-abroad-intent-to-return"
+    CITIZEN_ABROAD_NEVER_RESIDED = "citizen-abroad-never-resided"
+    CITIZEN_ABROAD_RETURN_UNCERTAIN = "citizen-abroad-return-uncertain"
+    DECEASED = "deceased"
+    DECLARED_INCOMPETENT = "declared-incompetent"
+    EIGHTEEN_ON_ELECTION_DAY = "eighteen-on-election-day"
+    FELON = "felon"
+    OTHER = "other"
+    PERMANENTLY_DENIED = "permanently-denied"
+    PROTECTED_VOTER = "protected-voter"
+    RESTORED_FELON = "restored-felon"
+    UNITED_STATES_CITIZEN = "united-states-citizen"
 
 
 class VoterHelperType(Enum):
 
-    assistant = "assistant"
-    witness = "witness"
+    ASSISTANT = "assistant"
+    WITNESS = "witness"
 
 
 class VoterIdType(Enum):
 
-    drivers_license = "drivers-license"
-    local_voter_registration_id = "local-voter-registration-id"
-    other = "other"
-    ssn = "ssn"
-    ssn4 = "ssn4"
-    state_id = "state-id"
-    state_voter_registration_id = "state-voter-registration-id"
-    unknown = "unknown"
-    unspecified_document = "unspecified-document"
-    unspecified_document_with_name_and_address = (
+    DRIVERS_LICENSE = "drivers-license"
+    LOCAL_VOTER_REGISTRATION_ID = "local-voter-registration-id"
+    OTHER = "other"
+    SSN = "ssn"
+    SSN4 = "ssn4"
+    STATE_ID = "state-id"
+    STATE_VOTER_REGISTRATION_ID = "state-voter-registration-id"
+    UNKNOWN = "unknown"
+    UNSPECIFIED_DOCUMENT = "unspecified-document"
+    UNSPECIFIED_DOCUMENT_WITH_NAME_AND_ADDRESS = (
         "unspecified-document-with-name-and-address"
     )
-    unspecified_document_with_photo_identification = (
+    UNSPECIFIED_DOCUMENT_WITH_PHOTO_IDENTIFICATION = (
         "unspecified-document-with-photo-identification"
     )
 
 
 class VoterRequestType(Enum):
 
-    ballot_request = "ballot-request"
-    lookup = "lookup"
-    other = "other"
-    registration = "registration"
+    BALLOT_REQUEST = "ballot-request"
+    LOOKUP = "lookup"
+    OTHER = "other"
+    REGISTRATION = "registration"
 
 
 class VoterStatus(Enum):
 
-    active = "active"
-    inactive = "inactive"
-    other = "other"
+    ACTIVE = "active"
+    INACTIVE = "inactive"
+    OTHER = "other"
 
