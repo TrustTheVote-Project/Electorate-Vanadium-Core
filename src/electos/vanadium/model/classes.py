@@ -12,7 +12,7 @@ See:
 - https://github.com/usnistgov/voterrecordsinterchange/NIST_V0_voter_records_interchange.json
 """
 
-from datetime import date
+from datetime import date as Date
 from enum import Enum
 from typing import Literal, List, Optional, Union
 
@@ -174,7 +174,7 @@ class Signature(BaseModel):
 
     _type: Literal["VRI.Signature"] = "VRI.Signature"
 
-    date: Optional[date] = None
+    date: Optional[Date] = None
     file_value: Optional[Image] = None
     other_source: Optional[str] = None
     other_type: Optional[str] = None
@@ -203,7 +203,7 @@ class VoterId(BaseModel):
     _type: Literal["VRI.VoterId"] = "VRI.VoterId"
 
     attest_no_such_id: Optional[bool] = None
-    date_of_issuance: Optional[date] = None
+    date_of_issuance: Optional[Date] = None
     file_value: Optional[Union[File, Image]] = None
     other_type: Optional[str] = None
     string_value: Optional[str] = None
@@ -229,10 +229,10 @@ class Election(BaseModel):
 
     _type: Literal["VRI.Election"] = "VRI.Election"
 
-    end_date: Optional[date] = None
+    end_date: Optional[Date] = None
     external_identifier: Optional[List[ExternalIdentifier]] = Field(None, min_items=0)
     name: Optional[str] = None
-    start_date: date
+    start_date: Date
 
 
 # class Address(BaseModel):
@@ -332,7 +332,7 @@ class RequestProxy(BaseModel):
     origin_transaction_id: Optional[str] = None
     other_type: Optional[str] = None
     phone: Optional[PhoneContactMethod] = None
-    time_stamp: Optional[date] = None
+    time_stamp: Optional[Date] = None
     type: RequestProxyType
 
 
@@ -346,9 +346,9 @@ class TemporalBallotRequest(BaseModel):
     ballot_receipt_preference: Optional[List[BallotReceiptMethod]] = Field(
         None, min_items=0
     )
-    end_date: date
+    end_date: Date
     # mail_forwarding_address: Optional[Address] = None
-    start_date: date
+    start_date: Date
 
 
 class Voter(BaseModel):
@@ -361,7 +361,7 @@ class Voter(BaseModel):
     contact_method: Optional[List[Union[ContactMethod, PhoneContactMethod]]] = Field(
         None, min_items=0
     )
-    date_of_birth: Optional[date] = None
+    date_of_birth: Optional[Date] = None
     ethnicity: Optional[str] = None
     gender: Optional[str] = None
     # mailing_address: Optional[Address] = None
@@ -401,7 +401,7 @@ class VoterRecordsRequest(BaseModel):
         Union[ElectionBasedBallotRequest, PermanentBallotRequest, TemporalBallotRequest]
     ] = None
     form: Optional[RequestForm] = None
-    generated_date: date
+    generated_date: Date
     issuer: Optional[str] = None
     other_form: Optional[str] = None
     other_request_method: Optional[str] = None
@@ -440,7 +440,7 @@ class RequestSuccess(BaseModel):
 
     action: Optional[List[SuccessAction]] = Field(None, min_items=0)
     district: Optional[List[ReportingUnit]] = Field(None, min_items=0)
-    effective_date: Optional[date] = None
+    effective_date: Optional[Date] = None
     election_administration: Optional[ElectionAdministration] = None
     locality: Optional[List[ReportingUnit]] = Field(None, min_items=0)
     polling_place: Optional[ReportingUnit] = None
