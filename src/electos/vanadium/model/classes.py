@@ -151,7 +151,7 @@ class Party(BaseModel):
     _type: Literal["VRI.Party"] = "VRI.Party"
 
     Abbreviation: Optional[str] = None
-    ExternalIdentifier: Optional[List[ExternalIdentifier]] = Field(None, min_items=0)
+    ExternalIdentifier: Optional[List['ExternalIdentifier']] = Field(None, min_items=0)
     Name: str
 
 
@@ -163,7 +163,7 @@ class RequestRejection(BaseModel):
     _type: Literal["VRI.RequestRejection"] = "VRI.RequestRejection"
 
     AdditionalDetails: Optional[List[str]] = Field(None, min_items=0)
-    Error: Optional[List[Error]] = Field(None, min_items=0)
+    Error: Optional[List['Error']] = Field(None, min_items=0)
     TransactionId: Optional[str] = None
 
 
@@ -217,9 +217,9 @@ class BallotStyle(BaseModel):
 
     _type: Literal["VRI.BallotStyle"] = "VRI.BallotStyle"
 
-    ExternalIdentifier: Optional[List[ExternalIdentifier]] = Field(None, min_items=0)
+    ExternalIdentifier: Optional[List['ExternalIdentifier']] = Field(None, min_items=0)
     ImageUri: Optional[List[AnyUrl]] = Field(None, min_items=0)
-    Party: Optional[List[Party]] = Field(None, min_items=0)
+    Party: Optional[List['Party']] = Field(None, min_items=0)
 
 
 class Election(BaseModel):
@@ -230,7 +230,7 @@ class Election(BaseModel):
     _type: Literal["VRI.Election"] = "VRI.Election"
 
     EndDate: Optional[date] = None
-    ExternalIdentifier: Optional[List[ExternalIdentifier]] = Field(None, min_items=0)
+    ExternalIdentifier: Optional[List['ExternalIdentifier']] = Field(None, min_items=0)
     Name: Optional[str] = None
     StartDate: date
 
@@ -298,7 +298,7 @@ class ReportingUnit(BaseModel):
 
     _type: Literal["VRI.ReportingUnit"] = "VRI.ReportingUnit"
 
-    ExternalIdentifier: Optional[List[ExternalIdentifier]] = Field(None, min_items=0)
+    ExternalIdentifier: Optional[List['ExternalIdentifier']] = Field(None, min_items=0)
     IsDistricted: Optional[bool] = None
     Location: Optional[Location] = None
     Name: Optional[str] = None
@@ -358,7 +358,7 @@ class Voter(BaseModel):
 
     _type: Literal["VRI.Voter"] = "VRI.Voter"
 
-    ContactMethod: Optional[List[Union[ContactMethod, PhoneContactMethod]]] = Field(
+    ContactMethod: Optional[List[Union['ContactMethod', PhoneContactMethod]]] = Field(
         None, min_items=0
     )
     DateOfBirth: Optional[date] = None
@@ -373,8 +373,8 @@ class Voter(BaseModel):
     # ResidenceAddress: Address
     ResidenceAddressIsMailingAddress: Optional[bool] = None
     Signature: Optional[Signature] = None
-    VoterClassification: Optional[List[VoterClassification]] = Field(None, min_items=0)
-    VoterId: Optional[List[VoterId]] = Field(None, min_items=0)
+    VoterClassification: Optional[List['VoterClassification']] = Field(None, min_items=0)
+    VoterId: Optional[List['VoterId']] = Field(None, min_items=0)
 
 
 class VoterParticipation(BaseModel):
@@ -396,7 +396,7 @@ class VoterRecordsRequest(BaseModel):
 
     _type: Literal["VRI.VoterRecordsRequest"] = "VRI.VoterRecordsRequest"
 
-    AdditionalInfo: Optional[List[AdditionalInfo]] = Field(None, min_items=0)
+    AdditionalInfo: Optional[List['AdditionalInfo']] = Field(None, min_items=0)
     BallotRequest: Optional[
         Union[ElectionBasedBallotRequest, PermanentBallotRequest, TemporalBallotRequest]
     ] = None
@@ -406,7 +406,7 @@ class VoterRecordsRequest(BaseModel):
     OtherForm: Optional[str] = None
     OtherRequestMethod: Optional[str] = None
     OtherType: Optional[str] = None
-    RequestHelper: Optional[List[RequestHelper]] = Field(None, min_items=0)
+    RequestHelper: Optional[List['RequestHelper']] = Field(None, min_items=0)
     RequestMethod: RequestMethod
     RequestProxy: Optional[RequestProxy] = None
     SelectedLanguage: Optional[str] = None
@@ -423,7 +423,7 @@ class ElectionAdministration(BaseModel):
 
     _type: Literal["VRI.ElectionAdministration"] = "VRI.ElectionAdministration"
 
-    ContactMethod: Optional[List[Union[ContactMethod, PhoneContactMethod]]] = Field(
+    ContactMethod: Optional[List[Union['ContactMethod', PhoneContactMethod]]] = Field(
         None, min_items=0
     )
     Location: Optional[Location] = None
@@ -461,7 +461,7 @@ class VoterRecord(BaseModel):
     OtherStatus: Optional[str] = None
     PollingLocation: Optional[ReportingUnit] = None
     Voter: Voter
-    VoterParticipation: Optional[List[VoterParticipation]] = Field(None, min_items=0)
+    VoterParticipation: Optional[List['VoterParticipation']] = Field(None, min_items=0)
     VoterStatus: Optional[VoterStatus] = None
 
 
@@ -473,4 +473,4 @@ class VoterRecordResults(BaseModel):
     _type: Literal["VRI.VoterRecordResults"] = "VRI.VoterRecordResults"
 
     TransactionId: Optional[str] = None
-    VoterRecord: Optional[List[VoterRecord]] = Field(None, min_items=0)
+    VoterRecord: Optional[List['VoterRecord']] = Field(None, min_items=0)
