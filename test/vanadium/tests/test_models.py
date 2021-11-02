@@ -184,11 +184,13 @@ VOTER_RECORDS_REQUEST_TESTS = [
                     "name": "Proof of residence",
                 },
             ],
-            # "ballot_request": {
-            #     "ballot_receipt_reference": BallotReceiptMethod.MAIL,
-            #     "start_date": "2021-11-02",
-            #     "end_date": "2021-11-02",
-            # },
+            "ballot_request": {
+                "ballot_receipt_preference": [
+                    BallotReceiptMethod.MAIL,
+                ],
+                "end_date": "2021-11-02",
+                "start_date": "2021-11-02",
+            },
             "form": RequestForm.NVRA,
             "generated_date": "2021-10-31",
             "issuer": "Secretary of State",
