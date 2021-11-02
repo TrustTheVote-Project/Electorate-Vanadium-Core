@@ -48,6 +48,13 @@ help:
 	@echo "  build-docker-image - Build Docker image from Dockerfile"
 	@echo "  run-docker-image   - Run Docker container"
 	@echo ""
+	@echo "PyTest: common commands"
+	@echo ""
+	@echo "  test-all           - Run all test cases"
+	@echo "  test-one           - Run until first failing case"
+	@echo "  test-debug         - Run debugger if any cases fail"
+	@echo ""
+
 
 # Project builds
 
@@ -97,3 +104,14 @@ build-docker-image:
 
 run-docker-image: build-docker-image
 	docker run -it --rm --name "$(DOCKER_APP)" -p "$(DOCKER_PORT):$(DOCKER_PORT)" "$(DOCKER_TAG)"
+
+# PyTest
+
+test-all:
+	pytest
+
+test-one:
+	pytest -x
+
+test-debug:
+	pytest -x --pdb
