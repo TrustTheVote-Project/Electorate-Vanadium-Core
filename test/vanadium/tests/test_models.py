@@ -8,11 +8,7 @@ from pydantic import ValidationError
 
 from vanadium.model import *
 
-
-# --- Exception contexts
-
-RAISES_MISSING = (pytest.raises, (ValidationError,), {"match": "value_error.missing"})
-RAISES_NONE = (raises_none, (), {})
+from tests.conftest import Raises
 
 
 # --- Test data
@@ -21,13 +17,13 @@ RAISES_NONE = (raises_none, (), {})
 FILE_TESTS = [
     (
         {},
-        RAISES_MISSING
+        Raises.MISSING
     ),
     (
         {
             "data": b"dGV4dA==",
         },
-        RAISES_NONE
+        Raises.NONE
     ),
     (
         {
@@ -35,7 +31,7 @@ FILE_TESTS = [
             "file_name": "filename.txt",
             "mime_type": "text/plain",
         },
-        RAISES_NONE
+        Raises.NONE
     )
 ]
 
@@ -44,7 +40,7 @@ FILE_TESTS = [
 VOTER_TESTS = [
     (
         {},
-        RAISES_MISSING
+        Raises.MISSING
     ),
     (
         {
@@ -53,7 +49,7 @@ VOTER_TESTS = [
                 "full_name": "First Last"
             },
         },
-        RAISES_NONE
+        Raises.NONE
     ),
     (
         {
@@ -64,7 +60,7 @@ VOTER_TESTS = [
                 "middle_name": [ "A" ],
             },
         },
-        RAISES_NONE
+        Raises.NONE
     ),
     (
         {
@@ -74,7 +70,7 @@ VOTER_TESTS = [
                 middle_name = [ "A" ],
             ),
         },
-        RAISES_NONE
+        Raises.NONE
     ),
     (
         {
@@ -146,7 +142,7 @@ VOTER_TESTS = [
                 }
             ]
         },
-        RAISES_NONE
+        Raises.NONE
     )
 ]
 
@@ -155,7 +151,7 @@ VOTER_TESTS = [
 VOTER_RECORDS_REQUEST_TESTS = [
     (
         {},
-        RAISES_MISSING
+        Raises.MISSING
     ),
     (
         {
@@ -170,7 +166,7 @@ VOTER_RECORDS_REQUEST_TESTS = [
                 VoterRequestType.REGISTRATION
             ],
         },
-        RAISES_NONE
+        Raises.NONE
     ),
     (
         {
@@ -223,7 +219,7 @@ VOTER_RECORDS_REQUEST_TESTS = [
             ],
             "vendor_application_id": "Electorate Vanadium 0.1"
         },
-        RAISES_NONE
+        Raises.NONE
     ),
 ]
 
