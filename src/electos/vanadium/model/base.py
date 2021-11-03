@@ -36,3 +36,15 @@ class SchemaModel(pydantic.BaseModel):
     """Common state for all classes that are models for the NIST JSON Schema."""
 
     Config = _SchemaModelConfig
+
+    # Overrides:
+    #
+    # - 'dict' and 'json' default to excluding null values.
+    # - 'json' defaults to using aliases to be schema-compliant.
+
+    def dict(self, *, exclude_none = True, **opts):
+        return super().dict(exclude_none = exclude_none, **opts)
+
+
+    def json(self, *, by_alias = True, exclude_none = True, **opts):
+        return super().json(by_alias = by_alias, exclude_none = exclude_none, **opts)

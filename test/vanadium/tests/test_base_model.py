@@ -133,10 +133,10 @@ def test_base_model_assign(data, assign, raises):
 @pytest.mark.parametrize("data,expected", DICT_TESTS)
 def test_base_model_dict(data, expected):
     model = Package(**data)
-    assert model.dict(exclude_none = True) == expected
+    assert model.dict() == expected
 
 
 @pytest.mark.parametrize("data,expected", JSON_TESTS)
 def test_base_model_json(data, expected):
     model = Package(**data)
-    assert model.json(indent = 4, by_alias = True, exclude_none = True) == expected
+    assert model.json(indent = 4) == expected
