@@ -1,5 +1,5 @@
 # Electorate-Vanadium-Backend
-Electorate is the ElectOS (https://electos.org) subsystem for voter records management. Electorate Vanadium is the data warehouse for voter records data and related data on a distributed digital ledger. The Vanadium Backend provides a web services API for clients of the warehouse.
+Electorate is the ElectOS (https://electos.org) subsystem for voter records management. Electorate Vanadium Core is the data warehouse for voter records data and related data on a distributed digital ledger. The Vanadium core is a back-end server that provides a web services API for clients of the warehouse.
 
 The API's interface specification is based on the data schema of the data interoperability guideline for Voter Records Interchange (VRI), published by the US National Institute of Standards and Technology (NIST) as NIST 1500-102.
 
