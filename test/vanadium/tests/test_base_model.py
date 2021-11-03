@@ -38,29 +38,29 @@ INIT_TESTS = [
     ),
     (
         {
-            "name": "test-package",
+            "Name": "test-package",
         },
         Raises.MISSING
     ),
     (
         {
-            "name": "test-package",
-            "status": Status.ALPHA,
+            "Name": "test-package",
+            "Status": Status.ALPHA,
         },
         Raises.NONE
     ),
     (
         {
-            "name": "test-package",
-            "description": "Dummy placeholder for testing",
-            "status": Status.ALPHA,
+            "Name": "test-package",
+            "Description": "Dummy placeholder for testing",
+            "Status": Status.ALPHA,
         },
         Raises.NONE
     ),
     (
         {
-            "name": "test-package",
-            "status": Status.ALPHA,
+            "Name": "test-package",
+            "Status": Status.ALPHA,
             "debug": True,
         },
         Raises.EXTRA
@@ -73,8 +73,8 @@ ASSIGNMENT_TESTS = [
     # Assigning additional properties is disallowed
     (
         {
-            "name": "test-package",
-            "status": Status.ALPHA,
+            "Name": "test-package",
+            "Status": Status.ALPHA,
         },
         ( "debug", True ),
         (pytest.raises, (ValueError,), {})
@@ -83,11 +83,12 @@ ASSIGNMENT_TESTS = [
 
 
 # data, dict, json
+# Note: 'dict' and 'json' aren't aliased so keys are lower-case.
 _DICT_JSON_TESTS = [
     (
         {
-            "name": "test-package",
-            "status": Status.ALPHA,
+            "Name": "test-package",
+            "Status": Status.ALPHA,
         },
         {
             "name": "test-package",
