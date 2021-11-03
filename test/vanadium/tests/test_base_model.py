@@ -91,17 +91,17 @@ _DICT_JSON_TESTS = [
             "Name": "test-package",
             "Status": Status.ALPHA,
         },
+        # Empty 'description' is dropped
         {
             "model__type": "Test.Package",
             "name": "test-package",
-            "description": None,
             "status": Status.ALPHA,
         },
+        # Empty 'Description' is dropped
         "{\n"
-        '    "model__type": "Test.Package",\n'
-        '    "name": "test-package",\n'
-        '    "description": null,\n'
-        '    "status": "alpha"\n'
+        '    "@type": "Test.Package",\n'
+        '    "Name": "test-package",\n'
+        '    "Status": "alpha"\n'
         "}",
     ),
 ]
@@ -133,10 +133,10 @@ def test_base_model_assign(data, assign, raises):
 @pytest.mark.parametrize("data,expected", DICT_TESTS)
 def test_base_model_dict(data, expected):
     model = Package(**data)
-    assert model.dict() == expected
+    assert model.dict(exclude_none = True) == expected
 
 
 @pytest.mark.parametrize("data,expected", JSON_TESTS)
 def test_base_model_json(data, expected):
     model = Package(**data)
-    assert model.json(indent = 4) == expected
+    assert model.json(indent = 4, by_alias = True, exclude_none = True) == expected
