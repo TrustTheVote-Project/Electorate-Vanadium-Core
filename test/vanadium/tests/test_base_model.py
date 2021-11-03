@@ -21,7 +21,7 @@ class Package(SchemaModel):
 
     """Subclass of SchemaModel."""
 
-    _model_type: Literal["Test.Package"] = "Test.Package"
+    model__type: Literal["Test.Package"] = "Test.Package"
 
     name: str
     description: Optional[str] = None
@@ -87,15 +87,18 @@ ASSIGNMENT_TESTS = [
 _DICT_JSON_TESTS = [
     (
         {
+            "@type": "Test.Package",
             "Name": "test-package",
             "Status": Status.ALPHA,
         },
         {
+            "model__type": "Test.Package",
             "name": "test-package",
             "description": None,
             "status": Status.ALPHA,
         },
         "{\n"
+        '    "model__type": "Test.Package",\n'
         '    "name": "test-package",\n'
         '    "description": null,\n'
         '    "status": "alpha"\n'
