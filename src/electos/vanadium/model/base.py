@@ -6,7 +6,8 @@ from vanadium.utils import Cases
 class _SchemaModelConfig:
 
     # Replaces leading '@' character in JSON Schema field names.
-    _AT_PREFIX = "_model_"
+    # Note: Ideally this is private (e.g. '_model_'). Consider 'PrivateAttr'?
+    _AT_PREFIX = "model__"
 
     def _field_name_alias(field_name, at_prefix = _AT_PREFIX):
         """Convert fieldnames:
