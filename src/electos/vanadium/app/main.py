@@ -1,13 +1,15 @@
 from fastapi import FastAPI
 
-# from vanadium.app.route import {router}
+from vanadium.app.route import _test
 
-_routers = {
-}
+_routers = [
+    _test
+]
 
 def application() -> FastAPI:
     app = FastAPI()
-    for router, arguments in _routers.items():
-        router = router.router()
-        app.include_router(router, **arguments)
+    for item in _routers:
+        router = item.router()
+        print(item, router)
+        app.include_router(router)
     return app
