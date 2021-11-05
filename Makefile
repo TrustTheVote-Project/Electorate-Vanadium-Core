@@ -5,6 +5,8 @@
 
 # --- Variables
 
+ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+
 PROJECT := vanadium
 
 PIP_REQ_MAIN := requirements.txt
@@ -14,6 +16,14 @@ DOCKER_TAG  := $(PROJECT)
 DOCKER_APP  := $(PROJECT)-app
 DOCKER_HOST := localhost
 DOCKER_PORT := 8080
+
+SERVER_APP_PATH := $(ROOT)
+SERVER_APP_NAME := $(PROJECT).app.main:application
+SERVER_HOST := 127.0.0.1
+SERVER_PORT := 8080
+
+SERVER_MAIN_FLAGS = --host $(SERVER_HOST) --port $(SERVER_PORT) $(SERVER_APP_NAME)
+SERVER_TEST_FLAGS = --reload $(SERVER_MAIN_FLAGS)
 
 # --- Rules
 
@@ -53,6 +63,10 @@ help:
 	@echo "  test-all           - Run all test cases"
 	@echo "  test-one           - Run until first failing case"
 	@echo "  test-debug         - Run debugger if any cases fail"
+	@echo ""
+	@echo "Uvicorn server"
+	@echo ""
+	@echo "  serve              - Run uvicorn server	"
 	@echo ""
 
 
@@ -115,3 +129,11 @@ test-one:
 
 test-debug:
 	pytest -x --pdb
+
+# Uvicorn
+
+serve:
+	uvicorn $(SERVER_MAIN_FLAGS)
+
+serve-test:
+	uvicorn $(SERVER_TEST_FLAGS)
