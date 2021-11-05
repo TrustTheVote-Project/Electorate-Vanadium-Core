@@ -35,12 +35,94 @@ VOTERS = {
             "FirstName": "First",
             "LastName": "Last",
         }
-    }
+    },
+    "nvra-detailed": {
+        "@type": "VRI.Voter",
+        "DateOfBirth": "1993-11-12",
+        "VoterId": [
+            {
+                "@type": "VRI.VoterId",
+                "Type": "drivers-license",
+                "StringValue": "AA999888",
+                "AttestNoSuchId": False
+            },
+            {
+                "@type": "VRI.VoterId",
+                "Type": "ssn4",
+                "AttestNoSuchId": True
+            }
+        ],
+        "Name": {
+            "@type": "VRI.Name",
+            "FirstName": "JANE",
+            "MiddleName": [
+                "A"
+            ],
+            "LastName": "DOE",
+            "Suffix": ""
+        },
+        "VoterClassification": [
+            {
+                "@type": "VRI.VoterClassification",
+                "Assertion": "yes",
+                "Type": "eighteen-on-election-day"
+            },
+            {
+                "@type": "VRI.VoterClassification",
+                "Assertion": "yes",
+                "Type": "united-states-citizen"
+            },
+            {
+                "@type": "VRI.VoterClassification",
+                "Assertion": "yes",
+                "Type": "other",
+                "OtherType": "swear-accuracy"
+            },
+            {
+                "@type": "VRI.VoterClassification",
+                "Assertion": "yes",
+                "Type": "other",
+                "OtherType": "filled-on-own-behalf"
+            },
+            {
+                "@type": "VRI.VoterClassification",
+                "Assertion": "yes",
+                "Type": "other",
+                "OtherType": "ohio-resident"
+            },
+            {
+                "@type": "VRI.VoterClassification",
+                "Assertion": "yes",
+                "Type": "other",
+                "OtherType": "bmv-authorization"
+            },
+            {
+                "@type": "VRI.VoterClassification",
+                "Assertion": "yes",
+                "Type": "other",
+                "OtherType": "meets-all-requirements"
+            }
+        ],
+        "ContactMethod": [
+            {
+                "@type": "VRI.ContactMethod",
+                "Type": "phone",
+                "Value": "(330) 614-8004"
+            },
+            {
+                "@type": "VRI.ContactMethod",
+                "Type": "email",
+                "Value": "JDOE@TESTEMAIL.COM"
+            }
+        ]
+    },
+
 }
 
 
 VOTER_RECORDS_REQUEST_TESTS = [
-    ( REQUEST_TEMPLATES["minimal"], VOTERS["minimal"] )
+    ( REQUEST_TEMPLATES["minimal"], VOTERS["minimal"] ),
+    ( REQUEST_TEMPLATES["minimal"], VOTERS["nvra-detailed"] ),
 ]
 
 
