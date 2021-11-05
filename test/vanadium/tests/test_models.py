@@ -21,15 +21,15 @@ FILE_TESTS = [
     ),
     (
         {
-            "data": b"dGV4dA==",
+            "Data": b"dGV4dA==",
         },
         Raises.NONE
     ),
     (
         {
-            "data":      b"dGV4dA==",
-            "file_name": "filename.txt",
-            "mime_type": "text/plain",
+            "Data":     b"dGV4dA==",
+            "FileName": "filename.txt",
+            "MimeType": "text/plain",
         },
         Raises.NONE
     )
@@ -44,101 +44,101 @@ VOTER_TESTS = [
     ),
     (
         {
-            "name":
+            "Name":
             {
-                "full_name": "First Last"
+                "FullName": "First Last"
             },
         },
         Raises.NONE
     ),
     (
         {
-            "name":
+            "Name":
             {
-                "first_name": "Jane",
-                "last_name": "Doe",
-                "middle_name": [ "A" ],
+                "FirstName": "Jane",
+                "LastName": "Doe",
+                "MiddleName": [ "A" ],
             },
         },
         Raises.NONE
     ),
     (
         {
-            "name": Name(
-                first_name = "Jane",
-                last_name = "Doe",
-                middle_name = [ "A" ],
+            "Name": Name(
+                FirstName = "Jane",
+                LastName = "Doe",
+                MiddleName = [ "A" ],
             ),
         },
         Raises.NONE
     ),
     (
         {
-            "contact_method": [
+            "ContactMethod": [
                 {
-                    "type": ContactMethodType.EMAIL,
-                    "value": "jane.doe@email.com",
+                    "Type": ContactMethodType.EMAIL,
+                    "Value": "jane.doe@email.com",
                 },
                 {
-                    "type": ContactMethodType.PHONE,
-                    "value": "999-555-1111",
+                    "Type": ContactMethodType.PHONE,
+                    "Value": "999-555-1111",
                 },
                 {
-                    "type": ContactMethodType.OTHER,
-                    "value": "Bat signal",
-                },
-            ],
-            "date_of_birth": "2001-07-05",
-            "ethnicity": "White",
-            "gender": "Female",
-            # "mailing_address": None,
-            "name": {
-                "first_name": "Jane",
-                "last_name": "Doe",
-                "middle_name": [ "A" ],
-            },
-            "party": {
-                "name": "Independent",
-            },
-            # "previous_residence_address": None,
-            "previous_signature": {
-                "source": SignatureSource.VOTER,
-                "type": SignatureType.OTHER,
-                "other_type": "photograph",
-            },
-            # "residence_address": None,
-            "residence_address_is_mailing_address": True,
-            "signature": {
-                "date": "2020-02-29",
-                "file_value": {
-                    "data": b"W2ltYWdlIGZpbGVd",
-                    "file_name": "signature.png",
-                    "mime_type": "image/png",
-                },
-                "source": SignatureSource.DMV,
-                "type": SignatureType.ELECTRONIC,
-            },
-            "voter_classification": [
-                {
-                    "assertion": AssertionValue.YES,
-                    "type": VoterClassificationType.UNITED_STATES_CITIZEN,
-                },
-                {
-                    "assertion": AssertionValue.UNKNOWN,
-                    "type": VoterClassificationType.RESTORED_FELON,
+                    "Type": ContactMethodType.OTHER,
+                    "Value": "Bat signal",
                 },
             ],
-            "voter_id": [
+            "DateOfBirth": "2001-07-05",
+            "Ethnicity": "White",
+            "Gender": "Female",
+            # "MailingAddress": None,
+            "Name": {
+                "FirstName": "Jane",
+                "LastName": "Doe",
+                "MiddleName": [ "A" ],
+            },
+            "Party": {
+                "Name": "Independent",
+            },
+            # "PreviousResidenceAddress": None,
+            "PreviousSignature": {
+                "Source": SignatureSource.VOTER,
+                "Type": SignatureType.OTHER,
+                "OtherType": "photograph",
+            },
+            # "ResidenceAddress": None,
+            "ResidenceAddressIsMailingAddress": True,
+            "Signature": {
+                "Date": "2020-02-29",
+                "FileValue": {
+                    "Data": b"W2ltYWdlIGZpbGVd",
+                    "FileName": "signature.png",
+                    "MimeType": "image/png",
+                },
+                "Source": SignatureSource.DMV,
+                "Type": SignatureType.ELECTRONIC,
+            },
+            "VoterClassification": [
                 {
-                    "attest_no_such_id": False,
-                    "date_of_issuance": "2017-09-22",
-                    "file_value": {
-                        "data": b"W2ltYWdlIGZpbGVd",
-                        "file_name": "drivers-license.txt",
-                        "mime_type": "text/plain",
+                    "Assertion": AssertionValue.YES,
+                    "Type": VoterClassificationType.UNITED_STATES_CITIZEN,
+                },
+                {
+                    "Assertion": AssertionValue.UNKNOWN,
+                    "Type": VoterClassificationType.RESTORED_FELON,
+                },
+            ],
+            "VoterId": [
+                {
+                    "AttestNoSuchId": False,
+                    "DateOfIssuance": "2017-09-22",
+                    "FileValue": {
+                        "Data": b"W2ltYWdlIGZpbGVd",
+                        "FileName": "drivers-license.txt",
+                        "MimeType": "text/plain",
                     },
-                    "string_value": "X1234567",
-                    "type": VoterIdType.DRIVERS_LICENSE,
+                    "StringValue": "X1234567",
+                    "Type": VoterIdType.DRIVERS_LICENSE,
                 }
             ]
         },
@@ -155,14 +155,14 @@ VOTER_RECORDS_REQUEST_TESTS = [
     ),
     (
         {
-            "generated_date": "2021-10-31",
-            "request_method": RequestMethod.MOTOR_VEHICLE_OFFICE,
-            "subject": {
-                "name": {
-                    "full_name": "Milo Bloom",
+            "GeneratedDate": "2021-10-31",
+            "RequestMethod": RequestMethod.MOTOR_VEHICLE_OFFICE,
+            "Subject": {
+                "Name": {
+                    "FullName": "Milo Bloom",
                 },
             },
-            "type": [
+            "Type": [
                 VoterRequestType.REGISTRATION
             ],
         },
@@ -170,54 +170,54 @@ VOTER_RECORDS_REQUEST_TESTS = [
     ),
     (
         {
-            "additional_info": [
+            "AdditionalInfo": [
                 {
-                    "file_value": {
-                        "data":      b"dGV4dA==",
-                        "file_name": "filename.txt",
-                        "mime_type": "text/plain",
+                    "FileValue": {
+                        "Data":      b"dGV4dA==",
+                        "FileName": "filename.txt",
+                        "MimeType": "text/plain",
                     },
-                    "name": "Proof of residence",
+                    "Name": "Proof of residence",
                 },
             ],
-            "ballot_request": {
-                "ballot_receipt_preference": [
+            "BallotRequest": {
+                "BallotReceiptPreference": [
                     BallotReceiptMethod.MAIL,
                 ],
-                "end_date": "2021-11-02",
-                "start_date": "2021-11-02",
+                "EndDate": "2021-11-02",
+                "StartDate": "2021-11-02",
             },
-            "form": RequestForm.NVRA,
-            "generated_date": "2021-10-31",
-            "issuer": "Secretary of State",
-            "request_helper": [
+            "Form": RequestForm.NVRA,
+            "GeneratedDate": "2021-10-31",
+            "Issuer": "Secretary of State",
+            "RequestHelper": [
                 {
-                    "name": {
-                        "first_name": "Alice"
+                    "Name": {
+                        "FirstName": "Alice"
                     },
-                    "phone": {
-                        "capability": [
+                    "Phone": {
+                        "Capability": [
                             PhoneCapability.VOICE,
                             PhoneCapability.SMS,
                         ],
-                        "type": ContactMethodType.PHONE,
-                        "value": "999-555-2222",
+                        "Type": ContactMethodType.PHONE,
+                        "Value": "999-555-2222",
                     },
-                    "type": VoterHelperType.WITNESS,
+                    "Type": VoterHelperType.WITNESS,
                 }
             ],
-            "request_method": RequestMethod.MOTOR_VEHICLE_OFFICE,
-            "selected_language": "en",
-            "subject": {
-                "name": {
-                    "first_name": "Zeb",
+            "RequestMethod": RequestMethod.MOTOR_VEHICLE_OFFICE,
+            "SelectedLanguage": "en",
+            "Subject": {
+                "Name": {
+                    "FirstName": "Zeb",
                 },
             },
-            "transaction_id": 1234567,
-            "type": [
+            "TransactionId": 1234567,
+            "Type": [
                 VoterRequestType.REGISTRATION
             ],
-            "vendor_application_id": "Electorate Vanadium 0.1"
+            "VendorApplicationId": "Electorate Vanadium 0.1"
         },
         Raises.NONE
     ),
@@ -231,9 +231,9 @@ def test_file(data, raises):
     raises, args, opts = raises
     with raises(*args, **opts) as ex:
         model = File(**data)
-        assert model.data == data["data"]
-        assert model.file_name == data.get("file_name")
-        assert model.mime_type == data.get("mime_type")
+        assert model.data == data["Data"]
+        assert model.file_name == data.get("FileName")
+        assert model.mime_type == data.get("MimeType")
 
 
 @pytest.mark.parametrize("data,raises", VOTER_TESTS)
