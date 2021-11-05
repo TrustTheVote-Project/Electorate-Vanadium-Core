@@ -3,11 +3,7 @@ from typing import Optional
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-
-# Dummy model. Use VoterRecordsRequest instead.
-class Item(BaseModel):
-
-    data: str
+from vanadium.model import VoterRecordsRequest
 
 
 # --- Routes
@@ -22,18 +18,17 @@ _router = APIRouter(prefix = "/voter/registration")
     summary = "Initiate a new voter registration request",
 )
 def voter_registration_request(
-    item: Item
+    item: VoterRecordsRequest
 ):
     """Create a new voter registration request.
 
     It is an error if no record exists.
     """
     transaction_id = (
-        item.data if item.data else "<invalid ID>"
+        item.transaction_id if item.transaction_id else "<generated new ID>"
     )
     return {
         "id":      transaction_id,
-        "request": item,
         "status":  "Nominal success",
         "summary": "Created voter registration request",
     }
@@ -72,7 +67,7 @@ def voter_registration_status(
 )
 def voter_registration_update(
     transaction_id,
-    item: Item,
+    item: VoterRecordsRequest,
 ):
     """Update an existing voter registration request.
 
@@ -89,7 +84,6 @@ def voter_registration_update(
     """
     return {
         "id":      transaction_id,
-        "data":    item.data,
         "status":  "Nominal success",
         "summary": "Updated voter registration request",
     }
