@@ -16,53 +16,54 @@ from datetime import date as Date
 from enum import Enum
 from typing import Literal, List, Optional, Union
 
-from pydantic import AnyUrl, BaseModel, Extra, Field
+from pydantic import AnyUrl, Extra, Field
 
+from .base import SchemaModel
 from .enumerations import *
 
 
-class File(BaseModel):
+class File(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.File"] = "VRI.File"
+    model__type: Literal["VRI.File"] = "VRI.File"
 
     data: bytes
     file_name: Optional[str] = None
     mime_type: Optional[str] = None
 
 
-class Image(BaseModel):
+class Image(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.Image"] = "VRI.Image"
+    model__type: Literal["VRI.Image"] = "VRI.Image"
 
     data: bytes
     file_name: Optional[str] = None
     mime_type: Optional[str] = None
 
 
-class LatLng(BaseModel):
+class LatLng(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.LatLng"] = "VRI.LatLng"
+    model__type: Literal["VRI.LatLng"] = "VRI.LatLng"
 
     latitude: float
     longitude: float
     source: Optional[str] = None
 
 
-class Name(BaseModel):
+class Name(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.Name"] = "VRI.Name"
+    model__type: Literal["VRI.Name"] = "VRI.Name"
 
     first_name: Optional[str] = None
     full_name: Optional[str] = None
@@ -72,12 +73,12 @@ class Name(BaseModel):
     suffix: Optional[str] = None
 
 
-class PhoneContactMethod(BaseModel):
+class PhoneContactMethod(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.PhoneContactMethod"] = "VRI.PhoneContactMethod"
+    model__type: Literal["VRI.PhoneContactMethod"] = "VRI.PhoneContactMethod"
 
     capability: Optional[List[PhoneCapability]] = Field(None, min_items=0)
     other_type: Optional[str] = None
@@ -85,94 +86,94 @@ class PhoneContactMethod(BaseModel):
     value: str
 
 
-class RequestAcknowledgement(BaseModel):
+class RequestAcknowledgement(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.RequestAcknowledgement"] = "VRI.RequestAcknowledgement"
+    model__type: Literal["VRI.RequestAcknowledgement"] = "VRI.RequestAcknowledgement"
 
     transaction_id: Optional[str] = None
 
 
-class AdditionalInfo(BaseModel):
+class AdditionalInfo(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.AdditionalInfo"] = "VRI.AdditionalInfo"
+    model__type: Literal["VRI.AdditionalInfo"] = "VRI.AdditionalInfo"
 
     file_value: Optional[Union[File, Image]] = None
     name: str
     string_value: Optional[str] = None
 
 
-class ContactMethod(BaseModel):
+class ContactMethod(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.ContactMethod"] = "VRI.ContactMethod"
+    model__type: Literal["VRI.ContactMethod"] = "VRI.ContactMethod"
 
     other_type: Optional[str] = None
     type: ContactMethodType
     value: str
 
 
-class Error(BaseModel):
+class Error(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.Error"] = "VRI.Error"
+    model__type: Literal["VRI.Error"] = "VRI.Error"
 
     name: RequestError
     other_error: Optional[str] = None
     ref: Optional[str] = None
 
 
-class ExternalIdentifier(BaseModel):
+class ExternalIdentifier(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.ExternalIdentifier"] = "VRI.ExternalIdentifier"
+    model__type: Literal["VRI.ExternalIdentifier"] = "VRI.ExternalIdentifier"
 
     other_type: Optional[str] = None
     type: IdentifierType
     value: str
 
 
-class Party(BaseModel):
+class Party(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.Party"] = "VRI.Party"
+    model__type: Literal["VRI.Party"] = "VRI.Party"
 
     abbreviation: Optional[str] = None
     external_identifier: Optional[List[ExternalIdentifier]] = Field(None, min_items=0)
     name: str
 
 
-class RequestRejection(BaseModel):
+class RequestRejection(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.RequestRejection"] = "VRI.RequestRejection"
+    model__type: Literal["VRI.RequestRejection"] = "VRI.RequestRejection"
 
     additional_details: Optional[List[str]] = Field(None, min_items=0)
     error: Optional[List[Error]] = Field(None, min_items=0)
     transaction_id: Optional[str] = None
 
 
-class Signature(BaseModel):
+class Signature(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.Signature"] = "VRI.Signature"
+    model__type: Literal["VRI.Signature"] = "VRI.Signature"
 
     date: Optional[Date] = None
     file_value: Optional[Image] = None
@@ -182,12 +183,12 @@ class Signature(BaseModel):
     type: Optional[SignatureType] = None
 
 
-class VoterClassification(BaseModel):
+class VoterClassification(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.VoterClassification"] = "VRI.VoterClassification"
+    model__type: Literal["VRI.VoterClassification"] = "VRI.VoterClassification"
 
     assertion: AssertionValue
     other_assertion: Optional[str] = None
@@ -195,12 +196,12 @@ class VoterClassification(BaseModel):
     type: VoterClassificationType
 
 
-class VoterId(BaseModel):
+class VoterId(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.VoterId"] = "VRI.VoterId"
+    model__type: Literal["VRI.VoterId"] = "VRI.VoterId"
 
     attest_no_such_id: Optional[bool] = None
     date_of_issuance: Optional[Date] = None
@@ -210,24 +211,24 @@ class VoterId(BaseModel):
     type: VoterIdType
 
 
-class BallotStyle(BaseModel):
+class BallotStyle(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.BallotStyle"] = "VRI.BallotStyle"
+    model__type: Literal["VRI.BallotStyle"] = "VRI.BallotStyle"
 
     external_identifier: Optional[List[ExternalIdentifier]] = Field(None, min_items=0)
     image_uri: Optional[List[AnyUrl]] = Field(None, min_items=0)
     party: Optional[List[Party]] = Field(None, min_items=0)
 
 
-class Election(BaseModel):
+class Election(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.Election"] = "VRI.Election"
+    model__type: Literal["VRI.Election"] = "VRI.Election"
 
     end_date: Optional[Date] = None
     external_identifier: Optional[List[ExternalIdentifier]] = Field(None, min_items=0)
@@ -235,7 +236,7 @@ class Election(BaseModel):
     start_date: Date
 
 
-# class Address(BaseModel):
+# class Address(SchemaModel):
 #
 #     __root__: Union[
 #         addr.CommunityAddressType,
@@ -252,12 +253,12 @@ class Election(BaseModel):
 #     ]
 
 
-class ElectionBasedBallotRequest(BaseModel):
+class ElectionBasedBallotRequest(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.ElectionBasedBallotRequest"] = "VRI.ElectionBasedBallotRequest"
+    model__type: Literal["VRI.ElectionBasedBallotRequest"] = "VRI.ElectionBasedBallotRequest"
 
     ballot_receipt_preference: Optional[List[BallotReceiptMethod]] = Field(
         None, min_items=0
@@ -266,24 +267,24 @@ class ElectionBasedBallotRequest(BaseModel):
     # mail_forwarding_address: Optional[Address] = None
 
 
-class Location(BaseModel):
+class Location(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.Location"] = "VRI.Location"
+    model__type: Literal["VRI.Location"] = "VRI.Location"
 
     # address: Optional[Address] = None
     directions: Optional[str] = None
     lat_lng: Optional[LatLng] = None
 
 
-class PermanentBallotRequest(BaseModel):
+class PermanentBallotRequest(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.PermanentBallotRequest"] = "VRI.PermanentBallotRequest"
+    model__type: Literal["VRI.PermanentBallotRequest"] = "VRI.PermanentBallotRequest"
 
     ballot_receipt_preference: Optional[List[BallotReceiptMethod]] = Field(
         None, min_items=0
@@ -291,12 +292,12 @@ class PermanentBallotRequest(BaseModel):
     # mail_forwarding_address: Optional[Address] = None
 
 
-class ReportingUnit(BaseModel):
+class ReportingUnit(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.ReportingUnit"] = "VRI.ReportingUnit"
+    model__type: Literal["VRI.ReportingUnit"] = "VRI.ReportingUnit"
 
     external_identifier: Optional[List[ExternalIdentifier]] = Field(None, min_items=0)
     is_districted: Optional[bool] = None
@@ -306,12 +307,12 @@ class ReportingUnit(BaseModel):
     type: ReportingUnitType
 
 
-class RequestHelper(BaseModel):
+class RequestHelper(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.RequestHelper"] = "VRI.RequestHelper"
+    model__type: Literal["VRI.RequestHelper"] = "VRI.RequestHelper"
 
     # address: Optional[Address] = None
     name: Optional[Name] = None
@@ -320,12 +321,12 @@ class RequestHelper(BaseModel):
     type: VoterHelperType
 
 
-class RequestProxy(BaseModel):
+class RequestProxy(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.RequestProxy"] = "VRI.RequestProxy"
+    model__type: Literal["VRI.RequestProxy"] = "VRI.RequestProxy"
 
     # address: Optional[Address] = None
     name: Optional[str] = None
@@ -336,12 +337,12 @@ class RequestProxy(BaseModel):
     type: RequestProxyType
 
 
-class TemporalBallotRequest(BaseModel):
+class TemporalBallotRequest(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.TemporalBallotRequest"] = "VRI.TemporalBallotRequest"
+    model__type: Literal["VRI.TemporalBallotRequest"] = "VRI.TemporalBallotRequest"
 
     ballot_receipt_preference: Optional[List[BallotReceiptMethod]] = Field(
         None, min_items=0
@@ -351,12 +352,12 @@ class TemporalBallotRequest(BaseModel):
     start_date: Date
 
 
-class Voter(BaseModel):
+class Voter(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.Voter"] = "VRI.Voter"
+    model__type: Literal["VRI.Voter"] = "VRI.Voter"
 
     contact_method: Optional[List[Union[ContactMethod, PhoneContactMethod]]] = Field(
         None, min_items=0
@@ -377,24 +378,24 @@ class Voter(BaseModel):
     voter_id: Optional[List[VoterId]] = Field(None, min_items=0)
 
 
-class VoterParticipation(BaseModel):
+class VoterParticipation(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.VoterParticipation"] = "VRI.VoterParticipation"
+    model__type: Literal["VRI.VoterParticipation"] = "VRI.VoterParticipation"
 
     ballot_style: Optional[BallotStyle] = None
     election: Election
     polling_location: Optional[ReportingUnit] = None
 
 
-class VoterRecordsRequest(BaseModel):
+class VoterRecordsRequest(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.VoterRecordsRequest"] = "VRI.VoterRecordsRequest"
+    model__type: Literal["VRI.VoterRecordsRequest"] = "VRI.VoterRecordsRequest"
 
     additional_info: Optional[List[AdditionalInfo]] = Field(None, min_items=0)
     ballot_request: Optional[
@@ -416,12 +417,12 @@ class VoterRecordsRequest(BaseModel):
     vendor_application_id: Optional[str] = None
 
 
-class ElectionAdministration(BaseModel):
+class ElectionAdministration(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.ElectionAdministration"] = "VRI.ElectionAdministration"
+    model__type: Literal["VRI.ElectionAdministration"] = "VRI.ElectionAdministration"
 
     contact_method: Optional[List[Union[ContactMethod, PhoneContactMethod]]] = Field(
         None, min_items=0
@@ -431,12 +432,12 @@ class ElectionAdministration(BaseModel):
     uri: Optional[List[AnyUrl]] = Field(None, min_items=0)
 
 
-class RequestSuccess(BaseModel):
+class RequestSuccess(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.RequestSuccess"] = "VRI.RequestSuccess"
+    model__type: Literal["VRI.RequestSuccess"] = "VRI.RequestSuccess"
 
     action: Optional[List[SuccessAction]] = Field(None, min_items=0)
     district: Optional[List[ReportingUnit]] = Field(None, min_items=0)
@@ -447,12 +448,12 @@ class RequestSuccess(BaseModel):
     transaction_id: Optional[str] = None
 
 
-class VoterRecord(BaseModel):
+class VoterRecord(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.VoterRecord"] = "VRI.VoterRecord"
+    model__type: Literal["VRI.VoterRecord"] = "VRI.VoterRecord"
 
     district: Optional[List[ReportingUnit]] = Field(None, min_items=0)
     election_administration: Optional[ElectionAdministration] = None
@@ -465,12 +466,12 @@ class VoterRecord(BaseModel):
     voter_status: Optional[VoterStatus] = None
 
 
-class VoterRecordResults(BaseModel):
+class VoterRecordResults(SchemaModel):
 
     class Config:
         extra = Extra.forbid
 
-    _type: Literal["VRI.VoterRecordResults"] = "VRI.VoterRecordResults"
+    model__type: Literal["VRI.VoterRecordResults"] = "VRI.VoterRecordResults"
 
     transaction_id: Optional[str] = None
     voter_record: Optional[List[VoterRecord]] = Field(None, min_items=0)
