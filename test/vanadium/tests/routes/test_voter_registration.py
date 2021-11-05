@@ -60,6 +60,20 @@ def test_voter_registration_request(template, voter):
     assert data["summary"].startswith("Created")
 
 
+@pytest.mark.parametrize("template,voter", VOTER_RECORDS_REQUEST_TESTS)
+def test_voter_registration_request_with_transaction_id(template, voter):
+    url = "/voter/registration/"
+    transaction_id = "[TEST]"
+    body = template.copy()
+    body.update(Subject = voter, TransactionId = transaction_id)
+    response = client.post(url, json = body)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["id"] == transaction_id
+    assert data["status"] == "Nominal success"
+    assert data["summary"].startswith("Created")
+
+
 def test_voter_registration_check_status():
     transaction_id = "[TEST]"
     url = f"/voter/registration/{transaction_id}"
