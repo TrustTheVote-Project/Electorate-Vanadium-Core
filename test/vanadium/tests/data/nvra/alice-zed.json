@@ -1,0 +1,59 @@
+{
+    "@type": "VRI.VoterRecordsRequest",
+    "AdditionalInfo": [
+        {
+            "@type": "VRI.AdditionalInfo",
+            "FileValue": {
+                "Data":     "dGV4dA==",
+                "FileName": "filename.txt",
+                "MimeType": "text/plain"
+            },
+            "Name": "Proof of residence"
+        }
+    ],
+    "BallotRequest": {
+        "@type": "VRI.TemporalBallotRequest",
+        "BallotReceiptPreference": [
+            "mail"
+        ],
+        "EndDate": "2021-11-02",
+        "StartDate": "2021-11-02"
+    },
+    "Form": "nvra",
+    "GeneratedDate": "2021-10-31",
+    "Issuer": "Secretary of State",
+    "RequestHelper": [
+        {
+            "@type": "VRI.RequestHelper",
+            "Name": {
+                "@type": "VRI.Name",
+                "FirstName": "Alice",
+                "LastName": "Laurel"
+            },
+            "Phone": {
+                "Capability": [
+                    "voice",
+                    "sms"
+                ],
+                "Type": "phone",
+                "Value": "999-555-2222"
+            },
+            "Type": "witness"
+        }
+    ],
+    "RequestMethod": "motor-vehicle-office",
+    "SelectedLanguage": "en",
+    "Subject": {
+        "@type": "VRI.Voter",
+        "Name": {
+            "@type": "VRI.Name",
+            "FirstName": "Zeb",
+            "LastName": "Hardy"
+        }
+    },
+    "TransactionId": "AB12345678",
+    "Type": [
+        "registration"
+    ],
+    "VendorApplicationId": "Electorate Vanadium 0.1"
+}
