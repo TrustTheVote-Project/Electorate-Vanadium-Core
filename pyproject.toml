@@ -29,6 +29,8 @@ coverage = "^5.5"
 tox = "^3.23.0"
 # For FastAPI TestClient
 requests = "^2.25.1"
+# For 'importlib.resources.files'
+importlib-resources = "^5.2.2"
 
 # TBD: Turn on later
 
