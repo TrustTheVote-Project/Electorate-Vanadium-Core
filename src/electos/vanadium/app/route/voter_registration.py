@@ -3,12 +3,18 @@ from typing import Optional
 from fastapi import APIRouter
 from pydantic import BaseModel
 
+from vanadium.app.resource import Resources
 from vanadium.model import VoterRecordsRequest
+from vanadium.utils import UniqueIds
 
 
 # --- Routes
 
 _router = APIRouter(prefix = "/voter/registration")
+
+# NOTE: These tests are not proper unit tests.
+# They are *order dependent* and rely on the fact tat PyTest executes tests
+# in the order they are defined.
 
 
 @_router.post(
@@ -24,13 +30,21 @@ def voter_registration_request(
 
     It is an error if no record exists.
     """
-    transaction_id = (
-        item.transaction_id if item.transaction_id else "<generated new ID>"
-    )
+    # If a transaction ID was provided use it as the unique ID.
+    # Otherwise generate one from the current time.
+    # (Note: not robust just good enough for testing.)
+    storage = Resources.get_storage()
+    unique_id = storage.insert(item.transaction_id, item)
+    if unique_id:
+        status = "Success"
+        summary = "Voter registration request created"
+    else:
+        status = "Failure"
+        summary = "Voter registration request already exists"
     return {
-        "id":      transaction_id,
-        "status":  "Nominal success",
-        "summary": "Created voter registration request",
+        "id":      unique_id,
+        "status":  status,
+        "summary": summary,
     }
 
 
@@ -54,10 +68,18 @@ def voter_registration_status(
       that has been accepted or rejected, only one that is pending.
     - Lookup is only done through the transaction ID, not through other identifiers.
     """
+    storage = Resources.get_storage()
+    value = storage.lookup(transaction_id)
+    if value:
+        status = "Success"
+        summary = "Transaction request is in process"
+    else:
+        status = "Failure"
+        summary = "Voter registration request not found"
     return {
         "id":      transaction_id,
-        "status":  "Nominal success",
-        "summary": "Checked status of voter registration request",
+        "status":  status,
+        "summary": summary,
     }
 
 
@@ -82,10 +104,18 @@ def voter_registration_update(
       that has been accepted or rejected, only one that is pending.
     - Lookup is only done through the transaction ID, not through other identifiers.
     """
+    storage = Resources.get_storage()
+    value = storage.update(transaction_id, item)
+    if value:
+        status = "Success"
+        summary = "Pending transaction request updated(overwritten!)"
+    else:
+        status = "Failure"
+        summary = "Voter registration request not found"
     return {
         "id":      transaction_id,
-        "status":  "Nominal success",
-        "summary": "Updated voter registration request",
+        "status":  status,
+        "summary": summary,
     }
 
 
@@ -100,10 +130,18 @@ def voter_registration_cancel(
 
     It is an error if there is no record to delete.
     """
+    storage = Resources.get_storage()
+    value = storage.remove(transaction_id)
+    if value:
+        status = "Success"
+        summary = "Transaction request has been cancelled"
+    else:
+        status = "Failure"
+        summary = "Voter registration request not found"
     return {
         "id":      transaction_id,
-        "status":  "Nominal success",
-        "summary": "Deleted voter registration request",
+        "status":  status,
+        "summary": summary,
     }
 
 
