@@ -25,6 +25,7 @@ uvicorn = { version = "0.15.0", extras = [ "standard" ] }
 
 # Testing
 pytest = "^6.2.3"
+pytest-mock = "3.5.1"
 coverage = "^5.5"
 tox = "^3.23.0"
 # For FastAPI TestClient
