@@ -1,6 +1,8 @@
 import pytest
+from pytest_mock import mocker
 
 from vanadium.app.database import MemoryDataStore
+from vanadium.utils import UniqueIds
 
 
 @pytest.fixture()
@@ -44,6 +46,17 @@ def test_insert_again(default_store):
     assert data.insert("key", "different_value") == None
     assert len(data.by_id) == 1
     assert data.lookup("key") == "value"
+
+
+def test_insert_unique_key(default_store, mocker):
+    data = default_store
+    fixed_key = 99
+    mocker.patch.object(UniqueIds, 'timestamp_id', return_value = fixed_key)
+    assert data.lookup("key") == None
+    assert len(data.by_id) == 0
+    assert data.insert(None, "value") == fixed_key
+    assert len(data.by_id) == 1
+    assert data.lookup(fixed_key) == "value"
 
 
 def test_update_once(default_store):
@@ -109,6 +122,17 @@ def test_upsert_again(default_store):
     assert data.upsert("key", "another_value") == "key"
     assert len(data.by_id) == 1
     assert data.lookup("key") == "another_value"
+
+
+def test_upsert_unique_key(default_store, mocker):
+    data = default_store
+    fixed_key = 99
+    mocker.patch.object(UniqueIds, 'timestamp_id', return_value = fixed_key)
+    assert data.lookup("key") == None
+    assert len(data.by_id) == 0
+    assert data.upsert(None, "value") == fixed_key
+    assert len(data.by_id) == 1
+    assert data.lookup(fixed_key) == "value"
 
 
 def test_remove_missing(default_store):
