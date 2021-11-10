@@ -14,7 +14,7 @@ def _assert_failed_connection(response):
     assert response.json() == { "detail": "Not Found" }
 
 
-def _debug_response(response):
+def _debug_response(response): # pragma: no cover
     r = response
     h = r.headers
     print(f"Status: {r.status_code}")
