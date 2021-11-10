@@ -5,4 +5,6 @@ data_file = .local/coverage/coverage-data
 directory = .local/coverage/html
 
 [report]
-omit = */.local/*
+omit =
+    */.local/*
+    */.venv/*
