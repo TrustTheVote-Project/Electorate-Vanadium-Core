@@ -25,6 +25,9 @@ SERVER_PORT := 8080
 SERVER_MAIN_FLAGS = --host $(SERVER_HOST) --port $(SERVER_PORT) $(SERVER_APP_NAME)
 SERVER_TEST_FLAGS = --reload $(SERVER_MAIN_FLAGS)
 
+COVERAGE_CONF := $(ROOT)/.coveragerc
+COVERAGE_DATA := $(shell grep -E "datafile =" $(COVERAGE_CONF) | cut -d ' ' -f 3)
+
 # --- Rules
 
 help:
@@ -63,6 +66,18 @@ help:
 	@echo "  test-all           - Run all test cases"
 	@echo "  test-one           - Run until first failing case"
 	@echo "  test-debug         - Run debugger if any cases fail"
+	@echo ""
+	@echo "Coverage:"
+	@echo ""
+	@echo "  cover-test         - Run coverage over pytest"
+	@echo "  cover-report       - Generate text report of coverage"
+	@echo "                       Skips files with complete coverage"
+	@echo "  cover-report-full  - Generate full text report of coverage"
+	@echo "  cover-html         - Generate HTML report of coverage"
+	@echo "                       Skips files with complete coverage"
+	@echo "  cover-html-full    - Generate full HTML report of coverage"
+	@echo "  cover-clean        - Clear out existing coverage data"
+	@echo "  cover-redo         - Clear out existing data and run tests again"
 	@echo ""
 	@echo "Uvicorn server"
 	@echo ""
@@ -129,6 +144,28 @@ test-one:
 
 test-debug:
 	pytest -x --pdb
+
+# PyTest + Coverage
+
+cover-test:
+	coverage run -m pytest
+
+cover-report: $(COVERAGE_DATA)
+	coverage report --skip-covered --skip-empty
+
+cover-report-full: $(COVERAGE_DATA)
+	coverage report
+
+cover-html: $(COVERAGE_DATA)
+	coverage html --skip-covered --skip-empty
+
+cover-html-full: $(COVERAGE_DATA)
+	coverage html
+
+cover-clean:
+	coverage erase
+
+cover-redo: cover-clean cover-test
 
 # Uvicorn
 
