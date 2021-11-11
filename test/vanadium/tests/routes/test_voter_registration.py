@@ -45,10 +45,8 @@ def test_voter_registration_request(package, file):
     response = client.post(url, json = body)
     assert response.status_code == 200
     data = response.json()
-    assert data["response"]["TransactionId"] == transaction_id
-    assert data["response"]["Action"][0] == SuccessAction.REGISTRATION_CREATED.value
-    assert data["status"] == "Success"
-    assert data["summary"].find("created") != -1
+    assert data["TransactionId"] == transaction_id
+    assert data["Action"][0] == SuccessAction.REGISTRATION_CREATED.value
 
 
 @pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
@@ -59,9 +57,7 @@ def test_voter_registration_request_without_transaction_id(package, file):
     response = client.post(url, json = body)
     assert response.status_code == 200
     data = response.json()
-    assert data["response"]["Action"][0] == SuccessAction.REGISTRATION_CREATED.value
-    assert data["status"] == "Success"
-    assert data["summary"].find("created") != -1
+    assert data["Action"][0] == SuccessAction.REGISTRATION_CREATED.value
 
 
 @pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
@@ -72,9 +68,7 @@ def test_voter_registration_check_status(package, file):
     response = client.get(url)
     assert response.status_code == 200
     data = response.json()
-    assert data["response"]["TransactionId"] == transaction_id
-    assert data["status"] == "Success"
-    assert data["summary"].find("in process") != -1
+    assert data["TransactionId"] == transaction_id
 
 
 @pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
@@ -85,10 +79,8 @@ def test_voter_registration_update(package, file):
     response = client.put(url, json = body)
     assert response.status_code == 200
     data = response.json()
-    assert data["response"]["TransactionId"] == transaction_id
-    assert data["response"]["Action"][0] == SuccessAction.REGISTRATION_UPDATED.value
-    assert data["status"] == "Success"
-    assert data["summary"].find("updated") != -1
+    assert data["TransactionId"] == transaction_id
+    assert data["Action"][0] == SuccessAction.REGISTRATION_UPDATED.value
 
 
 @pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
@@ -99,7 +91,5 @@ def test_voter_registration_cancel(package, file):
     response = client.delete(url)
     assert response.status_code == 200
     data = response.json()
-    assert data["response"]["TransactionId"] == transaction_id
-    assert data["response"]["Action"][0] == SuccessAction.REGISTRATION_CANCELLED.value
-    assert data["status"] == "Success"
-    assert data["summary"].find("cancelled") != -1
+    assert data["TransactionId"] == transaction_id
+    assert data["Action"][0] == SuccessAction.REGISTRATION_CANCELLED.value
