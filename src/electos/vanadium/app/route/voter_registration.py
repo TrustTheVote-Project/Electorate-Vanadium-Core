@@ -1,6 +1,6 @@
 from typing import Optional, Union
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Response, status
 from pydantic import BaseModel
 
 from vanadium.app.resource import Resources
@@ -23,12 +23,14 @@ _router = APIRouter(prefix = "/voter/registration")
 @_router.post(
     "/",
     response_model = Union[RequestSuccess, RequestRejection],
-    response_model_exclude_none = True,
+    response_model_exclude_unset = True,
+    # response_model_exclude_none = True,
     response_description = "Voter registration response",
     summary = "Initiate a new voter registration request",
 )
 def voter_registration_request(
-    item: VoterRecordsRequest
+    item: VoterRecordsRequest,
+    http_response: Response
 ):
     """Create a new voter registration request.
 
@@ -52,11 +54,15 @@ def voter_registration_request(
                 "Voter registration request already exists. "
                 "The transaction ID is already associated to a pending request."
             ],
-            Error = Error(
-                Name = RequestError.IDENTITY_LOOKUP_FAILED
-            ),
+            Error = [
+                Error(Name = RequestError.IDENTITY_LOOKUP_FAILED),
+            ],
             TransactionId = registration_id
         )
+        # TODO: Look into this.
+        # This isn't right. The request was valid, it's that the action requested
+        # doesn't need to be taken.
+        http_response.status_code = status.HTTP_400_BAD_REQUEST
     return response
 
 
@@ -69,6 +75,7 @@ def voter_registration_request(
 )
 def voter_registration_status(
     transaction_id,
+    http_response: Response
 ):
     """Status of pending voter registration request.
 
@@ -104,14 +111,15 @@ def voter_registration_status(
     else:
         response = RequestRejection(
             AdditionalDetails = [
-                "Voter registration request not found. ",
+                "Voter registration request not found. "
                 "The transaction ID isn't associated with any pending requests."
             ],
-            Error = Error(
-                Name = RequestError.IDENTITY_LOOKUP_FAILED
-            ),
+            Error = [
+                Error(Name = RequestError.IDENTITY_LOOKUP_FAILED)
+            ],
             TransactionId = transaction_id
         )
+        http_response.status_code = status.HTTP_404_NOT_FOUND
     return response
 
 
@@ -125,6 +133,7 @@ def voter_registration_status(
 def voter_registration_update(
     transaction_id,
     item: VoterRecordsRequest,
+    http_response: Response
 ):
     """Update an existing voter registration request.
 
@@ -154,11 +163,12 @@ def voter_registration_update(
                 "Voter registration request not found. "
                 "The transaction ID isn't associated with any pending requests."
             ],
-            Error = Error(
-                Name = RequestError.IDENTITY_LOOKUP_FAILED
-            ),
+            Error = [
+                Error(Name = RequestError.IDENTITY_LOOKUP_FAILED)
+            ],
             TransactionId = transaction_id
         )
+        http_response.status_code = status.HTTP_404_NOT_FOUND
     return response
 
 
@@ -171,6 +181,7 @@ def voter_registration_update(
 )
 def voter_registration_cancel(
     transaction_id,
+    http_response: Response
 ):
     """Delete an existing request.
 
@@ -191,11 +202,12 @@ def voter_registration_cancel(
                 "Voter registration request not found. "
                 "The transaction ID isn't associated with any pending requests."
             ],
-            Error = Error(
-                Name = RequestError.IDENTITY_LOOKUP_FAILED
-            ),
+            Error = [
+                Error(Name = RequestError.IDENTITY_LOOKUP_FAILED)
+            ],
             TransactionId = transaction_id
         )
+        http_response.status_code = status.HTTP_404_NOT_FOUND
     return response
 
 
