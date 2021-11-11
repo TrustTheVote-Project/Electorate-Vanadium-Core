@@ -22,7 +22,8 @@ _router = APIRouter(prefix = "/voter/registration")
 
 @_router.post(
     "/",
-    # response_model = VoterRecordsResponse,
+    response_model = Union[RequestSuccess, RequestRejection],
+    response_model_exclude_none = True,
     response_description = "Voter registration response",
     summary = "Initiate a new voter registration request",
 )
@@ -39,8 +40,6 @@ def voter_registration_request(
     storage = Resources.get_storage()
     registration_id = storage.insert(item.transaction_id, item)
     if registration_id:
-        status = "Success"
-        summary = "Voter registration request created"
         response = RequestSuccess(
             Action = [
                 SuccessAction.REGISTRATION_CREATED,
@@ -48,28 +47,24 @@ def voter_registration_request(
             TransactionId = registration_id
         )
     else:
-        status = "Failure"
-        summary = "Voter registration request already exists"
         response = RequestRejection(
             AdditionalDetails = [
+                "Voter registration request already exists. "
                 "The transaction ID is already associated to a pending request."
             ],
             Error = Error(
                 Name = RequestError.IDENTITY_LOOKUP_FAILED
             ),
-
             TransactionId = registration_id
         )
-    return {
-        "status":   status,
-        "summary":  summary,
-        "response": response,
-    }
+    return response
 
 
 @_router.get(
     "/{transaction_id}",
-    # response_model = Union[RequestAcknowledgement, RequestRejection],
+    response_model = Union[RequestAcknowledgement, RequestRejection],
+    response_model_exclude_unset = True,
+    response_description = "Voter registration response",
     summary = "Check on the status of a pending voter registration request"
 )
 def voter_registration_status(
@@ -101,16 +96,15 @@ def voter_registration_status(
     storage = Resources.get_storage()
     value = storage.lookup(transaction_id)
     if value:
-        status = "Success"
-        summary = "Transaction request is in process"
         response = RequestAcknowledgement(
+            # There's no way to pass a descriptive message with an Acknowledgement
+            # "Transaction request is in process"
             TransactionId = transaction_id
         )
     else:
-        status = "Failure"
-        summary = "Voter registration request not found"
         response = RequestRejection(
             AdditionalDetails = [
+                "Voter registration request not found. ",
                 "The transaction ID isn't associated with any pending requests."
             ],
             Error = Error(
@@ -118,15 +112,14 @@ def voter_registration_status(
             ),
             TransactionId = transaction_id
         )
-    return {
-        "status":   status,
-        "summary":  summary,
-        "response": response,
-    }
+    return response
 
 
 @_router.put(
     "/{transaction_id}",
+    response_model = Union[RequestSuccess, RequestRejection],
+    response_model_exclude_unset = True,
+    response_description = "Voter registration response",
     summary = "Update a pending voter registration request"
 )
 def voter_registration_update(
@@ -149,8 +142,6 @@ def voter_registration_update(
     storage = Resources.get_storage()
     value = storage.update(transaction_id, item)
     if value:
-        status = "Success"
-        summary = "Pending transaction request updated(overwritten!)"
         response = RequestSuccess(
             Action = [
                 SuccessAction.REGISTRATION_UPDATED,
@@ -158,10 +149,9 @@ def voter_registration_update(
             TransactionId = transaction_id
         )
     else:
-        status = "Failure"
-        summary = "Voter registration request not found"
         response = RequestRejection(
             AdditionalDetails = [
+                "Voter registration request not found. "
                 "The transaction ID isn't associated with any pending requests."
             ],
             Error = Error(
@@ -169,15 +159,14 @@ def voter_registration_update(
             ),
             TransactionId = transaction_id
         )
-    return {
-        "status":   status,
-        "summary":  summary,
-        "response": response,
-    }
+    return response
 
 
 @_router.delete(
     "/{transaction_id}",
+    response_model = Union[RequestSuccess, RequestRejection],
+    response_model_exclude_unset = True,
+    response_description = "Voter registration response",
     summary = "Cancel a pending voter registration request"
 )
 def voter_registration_cancel(
@@ -190,8 +179,6 @@ def voter_registration_cancel(
     storage = Resources.get_storage()
     value = storage.remove(transaction_id)
     if value:
-        status = "Success"
-        summary = "Transaction request has been cancelled"
         response = RequestSuccess(
             Action = [
                 SuccessAction.REGISTRATION_CANCELLED,
@@ -199,10 +186,9 @@ def voter_registration_cancel(
             TransactionId = transaction_id
         )
     else:
-        status = "Failure"
-        summary = "Voter registration request not found"
         response = RequestRejection(
             AdditionalDetails = [
+                "Voter registration request not found. "
                 "The transaction ID isn't associated with any pending requests."
             ],
             Error = Error(
@@ -210,11 +196,7 @@ def voter_registration_cancel(
             ),
             TransactionId = transaction_id
         )
-    return {
-        "status":  status,
-        "summary": summary,
-        "response": response,
-    }
+    return response
 
 
 # --- Router
