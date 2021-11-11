@@ -38,7 +38,7 @@ VOTER_RECORDS_REQUEST_TESTS = [
 # ---
 
 @pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_request(package, file):
+def test_voter_registration_request_success(package, file):
     url = "/voter/registration/"
     body = load_test_data(package, file)
     transaction_id = body["TransactionId"]
@@ -50,7 +50,7 @@ def test_voter_registration_request(package, file):
 
 
 @pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_request_without_transaction_id(package, file):
+def test_voter_registration_request_without_transaction_id_success(package, file):
     url = "/voter/registration/"
     body = load_test_data(package, file)
     body.update(TransactionId = None)
@@ -61,7 +61,25 @@ def test_voter_registration_request_without_transaction_id(package, file):
 
 
 @pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_check_status(package, file):
+def test_voter_registration_request_failure(package, file):
+    url = "/voter/registration/"
+    body = load_test_data(package, file)
+    transaction_id = body["TransactionId"]
+    response = client.post(url, json = body)
+    assert response.status_code == 400
+    data = response.json()
+    assert "Error" in data
+    assert len(data["AdditionalDetails"]) == 1
+    assert data["AdditionalDetails"][0].startswith(
+        "Voter registration request already exists."
+    )
+    assert len(data["Error"]) == 1
+    assert data["Error"][0]["Name"] == "identity-lookup-failed"
+    assert data["TransactionId"] == None
+
+
+@pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
+def test_voter_registration_check_status_success(package, file):
     body = load_test_data(package, file)
     transaction_id = body["TransactionId"]
     url = f"/voter/registration/{transaction_id}"
@@ -72,7 +90,24 @@ def test_voter_registration_check_status(package, file):
 
 
 @pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_update(package, file):
+def test_voter_registration_check_status_failure(package, file):
+    transaction_id = "invalid-id"
+    url = f"/voter/registration/{transaction_id}"
+    response = client.get(url)
+    assert response.status_code == 404
+    data = response.json()
+    assert "Error" in data
+    assert len(data["AdditionalDetails"]) == 1
+    assert data["AdditionalDetails"][0].startswith(
+        "Voter registration request not found."
+    )
+    assert len(data["Error"]) == 1
+    assert data["Error"][0]["Name"] == "identity-lookup-failed"
+    assert data["TransactionId"] == "invalid-id"
+
+
+@pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
+def test_voter_registration_update_success(package, file):
     body = load_test_data(package, file)
     transaction_id = body["TransactionId"]
     url = f"/voter/registration/{transaction_id}"
@@ -84,7 +119,27 @@ def test_voter_registration_update(package, file):
 
 
 @pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_cancel(package, file):
+def test_voter_registration_update_failure(package, file):
+    body = load_test_data(package, file)
+    body["TransactionId"] = "invalid-id"
+    transaction_id = body["TransactionId"]
+    url = f"/voter/registration/{transaction_id}"
+    response = client.put(url, json = body)
+    # Setting 'response.status_code' for 'put' isn't working.
+    assert response.status_code == 404
+    data = response.json()
+    assert "Error" in data
+    assert len(data["AdditionalDetails"]) == 1
+    assert data["AdditionalDetails"][0].startswith(
+        "Voter registration request not found."
+    )
+    assert len(data["Error"]) == 1
+    assert data["Error"][0]["Name"] == "identity-lookup-failed"
+    assert data["TransactionId"] == "invalid-id"
+
+
+@pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
+def test_voter_registration_cancel_success(package, file):
     body = load_test_data(package, file)
     transaction_id = body["TransactionId"]
     url = f"/voter/registration/{transaction_id}"
@@ -93,3 +148,20 @@ def test_voter_registration_cancel(package, file):
     data = response.json()
     assert data["TransactionId"] == transaction_id
     assert data["Action"][0] == SuccessAction.REGISTRATION_CANCELLED.value
+
+
+@pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
+def test_voter_registration_delete_failure(package, file):
+    transaction_id = "invalid-id"
+    url = f"/voter/registration/{transaction_id}"
+    response = client.delete(url)
+    assert response.status_code == 404
+    data = response.json()
+    assert "Error" in data
+    assert len(data["AdditionalDetails"]) == 1
+    assert data["AdditionalDetails"][0].startswith(
+        "Voter registration request not found."
+    )
+    assert len(data["Error"]) == 1
+    assert data["Error"][0]["Name"] == "identity-lookup-failed"
+    assert data["TransactionId"] == "invalid-id"
