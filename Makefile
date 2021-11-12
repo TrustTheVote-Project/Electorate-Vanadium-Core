@@ -137,40 +137,40 @@ run-docker-image: build-docker-image
 # PyTest
 
 test-all:
-	pytest
+	poetry run pytest
 
 test-one:
-	pytest -x
+	poetry run pytest -x
 
 test-debug:
-	pytest -x --pdb
+	poetry run pytest -x --pdb
 
 # PyTest + Coverage
 
 cover-test:
-	coverage run -m pytest
+	poetry run coverage run -m pytest
 
 cover-report: $(COVERAGE_DATA)
-	coverage report --skip-covered --skip-empty
+	poetry run coverage report --skip-covered --skip-empty
 
 cover-report-full: $(COVERAGE_DATA)
-	coverage report
+	poetry run coverage report
 
 cover-html: $(COVERAGE_DATA)
-	coverage html --skip-covered --skip-empty
+	poetry run coverage html --skip-covered --skip-empty
 
 cover-html-full: $(COVERAGE_DATA)
-	coverage html
+	poetry run coverage html
 
 cover-clean:
-	coverage erase
+	poetry run coverage erase
 
 cover-redo: cover-clean cover-test
 
 # Uvicorn
 
 serve:
-	uvicorn $(SERVER_MAIN_FLAGS)
+	poetry run uvicorn $(SERVER_MAIN_FLAGS)
 
 serve-test:
-	uvicorn $(SERVER_TEST_FLAGS)
+	poetry run uvicorn $(SERVER_TEST_FLAGS)
