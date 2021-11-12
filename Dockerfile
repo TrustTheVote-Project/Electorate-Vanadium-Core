@@ -14,6 +14,6 @@ FROM base AS runapp
 RUN groupadd -r vanadium && useradd -r -g vanadium vanadium
 
 USER vanadium
-WORKDIR /opt/electos/vanadium
+WORKDIR /opt/electos
 
-ENTRYPOINT ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "-b", "0.0.0.0:8080", "app.main:get_application()"]
+ENTRYPOINT ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "-b", "0.0.0.0:8080", "vanadium.app.main:get_application()"]
