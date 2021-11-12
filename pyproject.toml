@@ -24,24 +24,24 @@ uvicorn = { version = "0.15.0", extras = [ "standard" ] }
 [tool.poetry.dev-dependencies]
 
 # Testing
-pytest = "^6.2.3"
-pytest-mock = "3.5.1"
-coverage = "^5.5"
-tox = "^3.23.0"
+pytest = "~6.2.3"
+pytest-mock = "~3.6.0"
+coverage = "~5.5"
+tox = "~3.24"
 # For FastAPI TestClient
-requests = "^2.25.1"
+requests = "~2.25.1"
 # For 'importlib.resources.files'
-importlib-resources = "^5.2.2"
+importlib-resources = "~5.2.2"
 
-# TBD: Turn on later
+# TODO: Turn on later
 
 # Code quality
-### black = "21.8.b0"
-### isort = "5.8.0"
+### black = "~21.9b0"
+### isort = "~5.9.0"
 
 # Documentation
-### mkdocs = "1.1.2"
-### sphinx = "3.0.4"
+### mkdocs = "~1.2.2"
+### sphinx = "~3.5.0"
 
 [build-system]
 
