@@ -17,13 +17,12 @@ DOCKER_APP  := $(PROJECT)-app
 DOCKER_HOST := localhost
 DOCKER_PORT := 8080
 
-SERVER_APP_PATH := $(ROOT)
-SERVER_APP_NAME := $(PROJECT).app.main:application
-SERVER_HOST := 127.0.0.1
-SERVER_PORT := 8080
-
-SERVER_MAIN_FLAGS = --host $(SERVER_HOST) --port $(SERVER_PORT) $(SERVER_APP_NAME)
-SERVER_TEST_FLAGS = --reload $(SERVER_MAIN_FLAGS)
+SERVER_APP_PATH   := $(ROOT)
+SERVER_APP_NAME   := $(PROJECT).app.main:application
+SERVER_HOST       := 127.0.0.1
+SERVER_PORT       := 8080
+SERVER_MAIN_FLAGS := --host $(SERVER_HOST) --port $(SERVER_PORT) $(SERVER_APP_NAME)
+SERVER_TEST_FLAGS := --reload $(SERVER_MAIN_FLAGS)
 
 COVERAGE_CONF := $(ROOT)/.coveragerc
 COVERAGE_DATA := $(shell grep -E "datafile =" $(COVERAGE_CONF) | cut -d ' ' -f 3)
@@ -43,18 +42,18 @@ help:
 	@echo "  develop     - Install all dependencies and main package"
 	@echo "  depends     - Install all dependencies without the main package"
 	@echo ""
-	@echo "  build       - Build all distributable Python packages."
-	@echo "  build-sdist - Build project as source tarball."
-	@echo "  build-wheel - Build project as wheel."
+	@echo "  build       - Build all distributable Python packages"
+	@echo "  build-sdist - Build project as source tarball"
+	@echo "  build-wheel - Build project as wheel"
 	@echo ""
-	@echo "  clean       - Remove all built Python packages."
-	@echo "  clean-sdist - Remove built tarballs."
-	@echo "  clean-wheel - Remove built wheels."
+	@echo "  clean       - Remove all built Python packages"
+	@echo "  clean-sdist - Remove built tarballs"
+	@echo "  clean-wheel - Remove built wheels"
 	@echo ""
 	@echo "Pip requirements:"
 	@echo ""
-	@echo "  pip-requirements      - Export Pip requirements files with hashes."
-	@echo "  pip-requirements-base - Export Pip requirements files without hashes."
+	@echo "  pip-requirements      - Export Pip requirements files with hashes"
+	@echo "  pip-requirements-base - Export Pip requirements files without hashes"
 	@echo ""
 	@echo "Docker image:"
 	@echo ""
@@ -81,7 +80,7 @@ help:
 	@echo ""
 	@echo "Uvicorn server"
 	@echo ""
-	@echo "  serve              - Run uvicorn server	"
+	@echo "  serve              - Run uvicorn"
 	@echo ""
 
 
@@ -134,6 +133,7 @@ docker-build:
 docker-run:
 	docker run -it --rm --name "$(DOCKER_APP)" -p "$(DOCKER_PORT):$(DOCKER_PORT)" "$(DOCKER_TAG)"
 
+
 # PyTest
 
 test-all:
@@ -144,6 +144,7 @@ test-one:
 
 test-debug:
 	poetry run pytest -x --pdb
+
 
 # PyTest + Coverage
 
@@ -166,6 +167,7 @@ cover-clean:
 	poetry run coverage erase
 
 cover-redo: cover-clean cover-test
+
 
 # Uvicorn
 
