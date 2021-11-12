@@ -58,8 +58,8 @@ help:
 	@echo ""
 	@echo "Docker image:"
 	@echo ""
-	@echo "  build-docker-image - Build Docker image from Dockerfile"
-	@echo "  run-docker-image   - Run Docker container"
+	@echo "  docker-build       - Build Docker image from Dockerfile"
+	@echo "  docker-run         - Run Docker container"
 	@echo ""
 	@echo "PyTest: common commands"
 	@echo ""
@@ -128,10 +128,10 @@ pip-requirements-base:
 
 # Docker
 
-build-docker-image:
+docker-build:
 	docker build -t "$(DOCKER_TAG)" .
 
-run-docker-image: build-docker-image
+docker-run:
 	docker run -it --rm --name "$(DOCKER_APP)" -p "$(DOCKER_PORT):$(DOCKER_PORT)" "$(DOCKER_TAG)"
 
 # PyTest
