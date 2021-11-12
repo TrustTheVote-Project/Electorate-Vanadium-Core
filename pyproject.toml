@@ -5,12 +5,12 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry]
 
-name = "electos-electorate-vanadium"
+name = "electos-vanadium-core"
 version = "0.0.1"
 description = "Web service for ElectOS voter data warehouse"
 authors = ["Ion Y <ion@osetinstitute.org>"]
 packages = [
-    { include = "vanadium", from = "src/electos" }
+    { include = "electos/vanadium", from = "src" }
 ]
 
 [tool.poetry.dependencies]
