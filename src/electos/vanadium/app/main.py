@@ -2,12 +2,10 @@ from fastapi import FastAPI
 
 from vanadium.app.route import (
     voter_registration,
-    _test
 )
 
 _routers = [
     voter_registration,
-    _test
 ]
 
 def application() -> FastAPI:
