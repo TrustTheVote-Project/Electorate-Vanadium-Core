@@ -62,7 +62,7 @@ def voter_registration_request(
         - `TransactionId` is the generated unique ID for the request.
            Used in subsequent API calls to track the status of the request.
 
-        **Status Code**: `HTTP 200: Success`.
+        **Status Code**: `HTTP 201: Created`.
 
     - `RequestRejection` on failure
        The voter registration request was unsuccessful.
@@ -88,7 +88,6 @@ def voter_registration_request(
 
     - Add actual voter information using `Subject`.
     - Do not allow setting `TransactionId`.
-    - Status code on success should be `HTTP 201: Created`.
     - Status code on failure depends on circumstance:
         - A request has already been made and is in progress.
         - A request has already been made and is completed.
@@ -102,6 +101,7 @@ def voter_registration_request(
             ],
             TransactionId = registration_id
         )
+        http_response.status_code = status.HTTP_201_CREATED
     else:
         response = RequestRejection(
             AdditionalDetails = [
