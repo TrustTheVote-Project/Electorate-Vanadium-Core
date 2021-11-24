@@ -45,5 +45,6 @@ importlib-resources = "~5.2.2"
 ### isort = "~5.9.0"
 
 # Documentation
-### mkdocs = "~1.2.2"
+mkdocs = "~1.2.2"
+# pydoc-markdown = "~3"
 ### sphinx = "~3.5.0"
