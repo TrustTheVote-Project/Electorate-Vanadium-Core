@@ -17,6 +17,11 @@ DOCKER_APP  := $(PROJECT)-app
 DOCKER_HOST := localhost
 DOCKER_PORT := 8080
 
+MKDOCS_SITE_PATH      := $(ROOT)/build/docs
+MKDOCS_SERVER_HOST    := localhost
+MKDOCS_SERVER_PORT    := 8001
+MKDOCS_SERVER_ADDRESS := $(MKDOCS_SERVER_HOST):$(MKDOCS_SERVER_PORT)
+
 SERVER_APP_PATH   := $(ROOT)
 SERVER_APP_NAME   := $(PROJECT).app.main:application
 SERVER_HOST       := 127.0.0.1
@@ -57,6 +62,11 @@ help:
 	@echo "  clean       - Remove all built Python packages"
 	@echo "  clean-sdist - Remove built tarballs"
 	@echo "  clean-wheel - Remove built wheels"
+	@echo ""
+	@echo "  docs         - Rebuild all documentation"
+	@echo "  docs-changed - Rebuild only changed documentation"
+	@echo "  docs-clean   - Remove built documentation"
+	@echo "  docs-serve   - Run a local mkdocs server"
 	@echo ""
 	@echo "Pip requirements:"
 	@echo ""
@@ -122,6 +132,26 @@ build-wheel:
 clean-wheel:
 	rm -f dist/$(PROJECT)*.whl
 	rmdir --ignore-fail-on-non-empty dist
+
+
+# Doc builds
+
+docs: $(MKDOCS_SITE_PATH)
+	poetry run mkdocs build -d $(MKDOCS_SITE_PATH)
+
+docs-changed: $(MKDOCS_SITE_PATH)
+	poetry run mkdocs build --dirty -d $(MKDOCS_SITE_PATH)
+
+docs-clean:
+	rm -rf $(MKDOCS_SITE_PATH)
+
+docs-serve:
+	poetry run mkdocs serve -a $(MKDOCS_SERVER_ADDRESS)
+
+$(MKDOCS_SITE_PATH):
+	mkdir -p $@
+
+.PHONY: docs docs-changed docs-clean
 
 
 # Pip requirements
