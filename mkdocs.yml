@@ -1,0 +1,4 @@
+site_name: Electorate Vanadium Core
+nav:
+  - Home: index.md
+  - Installation: install.md
