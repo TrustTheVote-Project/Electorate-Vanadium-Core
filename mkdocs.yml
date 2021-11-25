@@ -1,4 +1,10 @@
 site_name: Electorate Vanadium Core
+markdown_extensions:
+  - footnotes
 nav:
-  - Home: index.md
-  - Installation: install.md
+  - Home:
+    - index.md
+    - install.md
+  - Development:
+    - development/build-system.md
+    - development/project-layout.md
