@@ -58,7 +58,7 @@ def request_body(request):
 
 # --- Test cases
 
-def test_voter_registration_request_success(client, request_body):
+def test_voter_registration_create_success(client, request_body):
     """Create a voter registration successfully.
     Uses the client provided transaction ID.
     """
@@ -72,7 +72,7 @@ def test_voter_registration_request_success(client, request_body):
     assert data["TransactionId"] == transaction_id
 
 
-def test_voter_registration_request_without_transaction_id_success(client, request_body):
+def test_voter_registration_create_without_transaction_id_success(client, request_body):
     """Create a voter registration without a transaction ID.
     Generates a transaction ID on the server.
     """
@@ -89,7 +89,7 @@ def test_voter_registration_request_without_transaction_id_success(client, reque
     ) is None
 
 
-def test_voter_registration_request_failure(client, request_body):
+def test_voter_registration_create_failure(client, request_body):
     """Fail to create a voter registration ID, because it already exists."""
     body = request_body
     transaction_id = body["TransactionId"]
