@@ -62,9 +62,9 @@ def test_voter_registration_request_success(client, request_body):
     """Create a voter registration successfully.
     Uses the client provided transaction ID.
     """
-    url = "/voter/registration/"
     body = request_body
     transaction_id = body["TransactionId"]
+    url = "/voter/registration/"
     response = client.post(url, json = body)
     assert response.status_code == 201
     data = response.json()
@@ -76,9 +76,9 @@ def test_voter_registration_request_without_transaction_id_success(client, reque
     """Create a voter registration without a transaction ID.
     Generates a transaction ID on the server.
     """
-    url = "/voter/registration/"
     body = request_body
     body.update(TransactionId = None)
+    url = "/voter/registration/"
     response = client.post(url, json = body)
     assert response.status_code == 201
     data = response.json()
@@ -91,9 +91,9 @@ def test_voter_registration_request_without_transaction_id_success(client, reque
 
 def test_voter_registration_request_failure(client, request_body):
     """Fail to create a voter registration ID, because it already exists."""
-    url = "/voter/registration/"
     body = request_body
     transaction_id = body["TransactionId"]
+    url = "/voter/registration/"
     response = client.post(url, json = body)
     assert response.status_code == 400
     data = response.json()
