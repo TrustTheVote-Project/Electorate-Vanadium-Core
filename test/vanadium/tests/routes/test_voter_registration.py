@@ -154,7 +154,7 @@ def test_voter_registration_create_failure(client_with_data, request_body):
         "Voter registration request already exists."
     )
     assert len(data["Error"]) == 1
-    assert data["Error"][0]["Name"] == "identity-lookup-failed"
+    assert data["Error"][0]["Name"] == RequestError.IDENTITY_LOOKUP_FAILED.value
     assert data["TransactionId"] == None
 
 
@@ -188,7 +188,7 @@ def test_voter_registration_check_status_failure(client_with_data):
         "Voter registration request not found."
     )
     assert len(data["Error"]) == 1
-    assert data["Error"][0]["Name"] == "identity-lookup-failed"
+    assert data["Error"][0]["Name"] == RequestError.IDENTITY_LOOKUP_FAILED.value
     assert data["TransactionId"] == "invalid-id"
 
 
@@ -222,7 +222,7 @@ def test_voter_registration_update_failure(client_without_data, request_body):
         "Voter registration request not found."
     )
     assert len(data["Error"]) == 1
-    assert data["Error"][0]["Name"] == "identity-lookup-failed"
+    assert data["Error"][0]["Name"] == RequestError.IDENTITY_LOOKUP_FAILED.value
     assert data["TransactionId"] == "invalid-id"
 
 
@@ -254,5 +254,5 @@ def test_voter_registration_cancel_failure(client_with_data):
         "Voter registration request not found."
     )
     assert len(data["Error"]) == 1
-    assert data["Error"][0]["Name"] == "identity-lookup-failed"
+    assert data["Error"][0]["Name"] == RequestError.IDENTITY_LOOKUP_FAILED.value
     assert data["TransactionId"] == "invalid-id"
