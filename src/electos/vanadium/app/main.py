@@ -1,5 +1,8 @@
 from fastapi import FastAPI
 
+from vanadium.app.resource import (
+    storage
+)
 from vanadium.app.route import (
     voter_registration,
 )
@@ -21,6 +24,7 @@ _MIDDLEWARE = [
 
 # Resource module names => resource initializer
 _RESOURCES = {
+    "storage": storage
 }
 
 # Router module names

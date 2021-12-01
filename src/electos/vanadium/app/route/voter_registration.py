@@ -1,9 +1,9 @@
 from typing import Optional, Union
 
-from fastapi import APIRouter, Response, status
+from fastapi import APIRouter, Depends, Response, status
 from pydantic import BaseModel
 
-from vanadium.app.resource import Resources
+from vanadium.app.resource import storage as storage_resource
 from vanadium.model import (
     Error,
     RequestAcknowledgement,     # VoterRecordsResponse sub-class
@@ -30,7 +30,8 @@ _router = APIRouter(prefix = "/voter/registration")
 )
 def voter_registration_request(
     item: VoterRecordsRequest,
-    http_response: Response
+    http_response: Response,
+    storage = Depends(storage_resource.get_storage),
 ):
     """Create a new voter registration request.
 
@@ -92,7 +93,6 @@ def voter_registration_request(
         - A request has already been made and is in progress.
         - A request has already been made and is completed.
     """
-    storage = Resources.get_storage()
     registration_id = storage.insert(item.transaction_id, item)
     if registration_id:
         response = RequestSuccess(
@@ -129,7 +129,8 @@ def voter_registration_request(
 )
 def voter_registration_status(
     transaction_id,
-    http_response: Response
+    http_response: Response,
+    storage = Depends(storage_resource.get_storage),
 ):
     """Status of voter registration.
 
@@ -176,7 +177,6 @@ def voter_registration_status(
     - Do not allow setting `TransactionId`.
     - Allow lookup through via voter information in `Subject`.
     """
-    storage = Resources.get_storage()
     value = storage.lookup(transaction_id)
     if value:
         response = RequestAcknowledgement(
@@ -209,7 +209,8 @@ def voter_registration_status(
 def voter_registration_update(
     transaction_id,
     item: VoterRecordsRequest,
-    http_response: Response
+    http_response: Response,
+    storage = Depends(storage_resource.get_storage),
 ):
     """Update an existing voter registration.
 
@@ -266,7 +267,6 @@ def voter_registration_update(
     - Do not allow setting `TransactionId`.
     - Allow lookup through via voter information in `Subject`.
     """
-    storage = Resources.get_storage()
     value = storage.update(transaction_id, item)
     if value:
         response = RequestSuccess(
@@ -299,7 +299,8 @@ def voter_registration_update(
 )
 def voter_registration_cancel(
     transaction_id,
-    http_response: Response
+    http_response: Response,
+    storage = Depends(storage_resource.get_storage),
 ):
     """Delete an existing voter registration.
 
@@ -345,7 +346,6 @@ def voter_registration_cancel(
     - Do not allow setting `TransactionId`.
     - Allow lookup through via voter information in `Subject`.
     """
-    storage = Resources.get_storage()
     value = storage.remove(transaction_id)
     if value:
         response = RequestSuccess(
