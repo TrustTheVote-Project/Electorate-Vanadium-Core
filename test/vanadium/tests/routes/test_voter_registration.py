@@ -24,6 +24,15 @@ from vanadium.model import (
 from tests.conftest import load_test_data
 
 
+# --- Test data
+
+VOTER_RECORDS_REQUEST_TESTS = [
+    ( "nvra", "minimal" ),
+    ( "nvra", "alice-zed" ),
+    ( "nvra", "jane-doe" ),
+]
+
+
 # --- Test fixtures
 
 # Share one application across all tests
@@ -39,24 +48,22 @@ def client(app):
     return client
 
 
-# --- Test data
-
-VOTER_RECORDS_REQUEST_TESTS = [
-    ( "nvra", "minimal" ),
-    ( "nvra", "alice-zed" ),
-    ( "nvra", "jane-doe" ),
-]
+@pytest.fixture(params = VOTER_RECORDS_REQUEST_TESTS)
+def request_body(request):
+    """Body of HTTP request."""
+    package, file = request.param
+    body = load_test_data(package, file)
+    return body
 
 
 # --- Test cases
 
-@pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_request_success(package, file, client):
+def test_voter_registration_request_success(client, request_body):
     """Create a voter registration successfully.
     Uses the client provided transaction ID.
     """
     url = "/voter/registration/"
-    body = load_test_data(package, file)
+    body = request_body
     transaction_id = body["TransactionId"]
     response = client.post(url, json = body)
     assert response.status_code == 201
@@ -65,13 +72,12 @@ def test_voter_registration_request_success(package, file, client):
     assert data["TransactionId"] == transaction_id
 
 
-@pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_request_without_transaction_id_success(package, file, client):
+def test_voter_registration_request_without_transaction_id_success(client, request_body):
     """Create a voter registration without a transaction ID.
     Generates a transaction ID on the server.
     """
     url = "/voter/registration/"
-    body = load_test_data(package, file)
+    body = request_body
     body.update(TransactionId = None)
     response = client.post(url, json = body)
     assert response.status_code == 201
@@ -82,11 +88,11 @@ def test_voter_registration_request_without_transaction_id_success(package, file
         data["TransactionId"]
     ) is None
 
-@pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_request_failure(package, file, client):
+
+def test_voter_registration_request_failure(client, request_body):
     """Fail to create a voter registration ID, because it already exists."""
     url = "/voter/registration/"
-    body = load_test_data(package, file)
+    body = request_body
     transaction_id = body["TransactionId"]
     response = client.post(url, json = body)
     assert response.status_code == 400
@@ -101,10 +107,9 @@ def test_voter_registration_request_failure(package, file, client):
     assert data["TransactionId"] == None
 
 
-@pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_check_status_success(package, file, client):
+def test_voter_registration_check_status_success(client, request_body):
     """Verify that a voter registration request exists on the server."""
-    body = load_test_data(package, file)
+    body = request_body
     transaction_id = body["TransactionId"]
     url = f"/voter/registration/{transaction_id}"
     response = client.get(url)
@@ -113,8 +118,7 @@ def test_voter_registration_check_status_success(package, file, client):
     assert data["TransactionId"] == transaction_id
 
 
-@pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_check_status_failure(package, file, client):
+def test_voter_registration_check_status_failure(client):
     """Verify that a voter registration request does NOT exist on the server."""
     transaction_id = "invalid-id"
     url = f"/voter/registration/{transaction_id}"
@@ -131,10 +135,9 @@ def test_voter_registration_check_status_failure(package, file, client):
     assert data["TransactionId"] == "invalid-id"
 
 
-@pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_update_success(package, file, client):
+def test_voter_registration_update_success(client, request_body):
     """Update an existing voter registration request successfully."""
-    body = load_test_data(package, file)
+    body = request_body
     transaction_id = body["TransactionId"]
     url = f"/voter/registration/{transaction_id}"
     response = client.put(url, json = body)
@@ -144,10 +147,9 @@ def test_voter_registration_update_success(package, file, client):
     assert data["Action"][0] == SuccessAction.REGISTRATION_UPDATED.value
 
 
-@pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_update_failure(package, file, client):
+def test_voter_registration_update_failure(client, request_body):
     """Fail to update a voter registration request because it does not exist."""
-    body = load_test_data(package, file)
+    body = request_body
     body["TransactionId"] = "invalid-id"
     transaction_id = body["TransactionId"]
     url = f"/voter/registration/{transaction_id}"
@@ -165,10 +167,9 @@ def test_voter_registration_update_failure(package, file, client):
     assert data["TransactionId"] == "invalid-id"
 
 
-@pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_cancel_success(package, file, client):
+def test_voter_registration_cancel_success(client, request_body):
     """Cancel an existing voter registration request successfully."""
-    body = load_test_data(package, file)
+    body = request_body
     transaction_id = body["TransactionId"]
     url = f"/voter/registration/{transaction_id}"
     response = client.delete(url)
@@ -178,8 +179,7 @@ def test_voter_registration_cancel_success(package, file, client):
     assert data["Action"][0] == SuccessAction.REGISTRATION_CANCELLED.value
 
 
-@pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_cancel_failure(package, file, client):
+def test_voter_registration_cancel_failure(client):
     """Fail to cancel a voter registration request because it does not exist."""
     transaction_id = "invalid-id"
     url = f"/voter/registration/{transaction_id}"
