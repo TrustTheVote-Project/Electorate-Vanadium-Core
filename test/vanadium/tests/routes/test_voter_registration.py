@@ -24,8 +24,19 @@ from vanadium.model import (
 from tests.conftest import load_test_data
 
 
-app = application()
-client = TestClient(app)
+# --- Test fixtures
+
+# Share one application across all tests
+@pytest.fixture(scope = "module")
+def app():
+    app = application()
+    return app
+
+
+@pytest.fixture
+def client(app):
+    client = TestClient(app)
+    return client
 
 
 # --- Test data
@@ -40,7 +51,7 @@ VOTER_RECORDS_REQUEST_TESTS = [
 # --- Test cases
 
 @pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_request_success(package, file):
+def test_voter_registration_request_success(package, file, client):
     """Create a voter registration successfully.
     Uses the client provided transaction ID.
     """
@@ -55,7 +66,7 @@ def test_voter_registration_request_success(package, file):
 
 
 @pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_request_without_transaction_id_success(package, file):
+def test_voter_registration_request_without_transaction_id_success(package, file, client):
     """Create a voter registration without a transaction ID.
     Generates a transaction ID on the server.
     """
@@ -72,7 +83,7 @@ def test_voter_registration_request_without_transaction_id_success(package, file
     ) is None
 
 @pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_request_failure(package, file):
+def test_voter_registration_request_failure(package, file, client):
     """Fail to create a voter registration ID, because it already exists."""
     url = "/voter/registration/"
     body = load_test_data(package, file)
@@ -91,7 +102,7 @@ def test_voter_registration_request_failure(package, file):
 
 
 @pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_check_status_success(package, file):
+def test_voter_registration_check_status_success(package, file, client):
     """Verify that a voter registration request exists on the server."""
     body = load_test_data(package, file)
     transaction_id = body["TransactionId"]
@@ -103,7 +114,7 @@ def test_voter_registration_check_status_success(package, file):
 
 
 @pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_check_status_failure(package, file):
+def test_voter_registration_check_status_failure(package, file, client):
     """Verify that a voter registration request does NOT exist on the server."""
     transaction_id = "invalid-id"
     url = f"/voter/registration/{transaction_id}"
@@ -121,7 +132,7 @@ def test_voter_registration_check_status_failure(package, file):
 
 
 @pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_update_success(package, file):
+def test_voter_registration_update_success(package, file, client):
     """Update an existing voter registration request successfully."""
     body = load_test_data(package, file)
     transaction_id = body["TransactionId"]
@@ -134,7 +145,7 @@ def test_voter_registration_update_success(package, file):
 
 
 @pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_update_failure(package, file):
+def test_voter_registration_update_failure(package, file, client):
     """Fail to update a voter registration request because it does not exist."""
     body = load_test_data(package, file)
     body["TransactionId"] = "invalid-id"
@@ -155,7 +166,7 @@ def test_voter_registration_update_failure(package, file):
 
 
 @pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_cancel_success(package, file):
+def test_voter_registration_cancel_success(package, file, client):
     """Cancel an existing voter registration request successfully."""
     body = load_test_data(package, file)
     transaction_id = body["TransactionId"]
@@ -168,7 +179,7 @@ def test_voter_registration_cancel_success(package, file):
 
 
 @pytest.mark.parametrize("package,file", VOTER_RECORDS_REQUEST_TESTS)
-def test_voter_registration_cancel_failure(package, file):
+def test_voter_registration_cancel_failure(package, file, client):
     """Fail to cancel a voter registration request because it does not exist."""
     transaction_id = "invalid-id"
     url = f"/voter/registration/{transaction_id}"
