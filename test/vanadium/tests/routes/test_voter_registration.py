@@ -1,16 +1,13 @@
 import re
 
 from fastapi import FastAPI
-# NOTE: These tests are not proper unit tests.
-# They are *order dependent* and rely on the fact tat PyTest executes tests
-# in the order they are defined. This will be fixed but for now they are at
-# least testing the core API.
-
 from fastapi.testclient import TestClient
 
 import pytest
 
+from vanadium.app.database import MemoryDataStore
 from vanadium.app.main import application
+from vanadium.app.resource import storage
 from vanadium.model import (
     RequestError,
     RequestForm,
@@ -34,8 +31,18 @@ VOTER_RECORDS_REQUEST_TESTS = [
 
 
 # --- Test fixtures
+#
+# Notes:
+#
+# - The application fixture is shared. To keep each test independent of the
+#   others, storage fixtures replace the application data storage on every test.
+#   Currently no other state on the application is changing.
+#
+# - The storage fixtures are FastAPI dependency overrides on the application
+#   database. Unlike the application database they do *not* need to have a
+#   dependency on the application since they don't, and *shouldn't*, touch
+#   'app.state'.
 
-# Share one application across all tests
 @pytest.fixture(scope = "module")
 def app():
     app = application()
@@ -50,18 +57,57 @@ def client(app):
 
 @pytest.fixture(params = VOTER_RECORDS_REQUEST_TESTS)
 def request_body(request):
-    """Body of HTTP request."""
+    """Pre-load test data and return the body of each HTTP request."""
     package, file = request.param
     body = load_test_data(package, file)
     return body
 
 
+@pytest.fixture
+def empty_storage():
+    """Use a data store that has no contents."""
+    def get_storage():
+        storage = MemoryDataStore()
+        return storage
+    return get_storage
+
+
+@pytest.fixture
+def prefilled_storage(request_body):
+    """Use a data store with test data already loaded."""
+    def get_storage():
+        storage = MemoryDataStore()
+        key = storage.insert(request_body["TransactionId"], request_body)
+        assert key is not None, "Failed to prefill storage"
+        return storage
+    return get_storage
+
+
+@pytest.fixture
+def client_without_data(app, empty_storage):
+    """Client that overrides app storage to use a new empty data store."""
+    app.dependency_overrides[storage.get_storage] = empty_storage
+    client = TestClient(app)
+    yield client
+    app.dependency_overrides = {}
+
+
+@pytest.fixture
+def client_with_data(app, prefilled_storage, request_body):
+    """Client that overrides app storage to always have a record."""
+    app.dependency_overrides[storage.get_storage] = prefilled_storage
+    client = TestClient(app)
+    yield client
+    app.dependency_overrides = {}
+
+
 # --- Test cases
 
-def test_voter_registration_create_success(client, request_body):
+def test_voter_registration_create_success(client_without_data, request_body):
     """Create a voter registration successfully.
     Uses the client provided transaction ID.
     """
+    client = client_without_data
     body = request_body
     transaction_id = body["TransactionId"]
     url = "/voter/registration/"
@@ -72,10 +118,14 @@ def test_voter_registration_create_success(client, request_body):
     assert data["TransactionId"] == transaction_id
 
 
-def test_voter_registration_create_without_transaction_id_success(client, request_body):
+def test_voter_registration_create_without_transaction_id_success(client_with_data, request_body):
     """Create a voter registration without a transaction ID.
     Generates a transaction ID on the server.
+
+    Note:
+    - The storage has data in it, but this record is new.
     """
+    client = client_with_data
     body = request_body
     body.update(TransactionId = None)
     url = "/voter/registration/"
@@ -89,8 +139,9 @@ def test_voter_registration_create_without_transaction_id_success(client, reques
     ) is None
 
 
-def test_voter_registration_create_failure(client, request_body):
+def test_voter_registration_create_failure(client_with_data, request_body):
     """Fail to create a voter registration ID, because it already exists."""
+    client = client_with_data
     body = request_body
     transaction_id = body["TransactionId"]
     url = "/voter/registration/"
@@ -107,8 +158,9 @@ def test_voter_registration_create_failure(client, request_body):
     assert data["TransactionId"] == None
 
 
-def test_voter_registration_check_status_success(client, request_body):
+def test_voter_registration_check_status_success(client_with_data, request_body):
     """Verify that a voter registration request exists on the server."""
+    client = client_with_data
     body = request_body
     transaction_id = body["TransactionId"]
     url = f"/voter/registration/{transaction_id}"
@@ -118,8 +170,13 @@ def test_voter_registration_check_status_success(client, request_body):
     assert data["TransactionId"] == transaction_id
 
 
-def test_voter_registration_check_status_failure(client):
-    """Verify that a voter registration request does NOT exist on the server."""
+def test_voter_registration_check_status_failure(client_with_data):
+    """Verify that a voter registration request does NOT exist on the server.
+
+    Note:
+    - The storage has data in it, but the ID is guaranteed not to already exist.
+    """
+    client = client_with_data
     transaction_id = "invalid-id"
     url = f"/voter/registration/{transaction_id}"
     response = client.get(url)
@@ -135,8 +192,9 @@ def test_voter_registration_check_status_failure(client):
     assert data["TransactionId"] == "invalid-id"
 
 
-def test_voter_registration_update_success(client, request_body):
+def test_voter_registration_update_success(client_with_data, request_body):
     """Update an existing voter registration request successfully."""
+    client = client_with_data
     body = request_body
     transaction_id = body["TransactionId"]
     url = f"/voter/registration/{transaction_id}"
@@ -147,8 +205,9 @@ def test_voter_registration_update_success(client, request_body):
     assert data["Action"][0] == SuccessAction.REGISTRATION_UPDATED.value
 
 
-def test_voter_registration_update_failure(client, request_body):
+def test_voter_registration_update_failure(client_without_data, request_body):
     """Fail to update a voter registration request because it does not exist."""
+    client = client_without_data
     body = request_body
     body["TransactionId"] = "invalid-id"
     transaction_id = body["TransactionId"]
@@ -167,8 +226,9 @@ def test_voter_registration_update_failure(client, request_body):
     assert data["TransactionId"] == "invalid-id"
 
 
-def test_voter_registration_cancel_success(client, request_body):
+def test_voter_registration_cancel_success(client_with_data, request_body):
     """Cancel an existing voter registration request successfully."""
+    client = client_with_data
     body = request_body
     transaction_id = body["TransactionId"]
     url = f"/voter/registration/{transaction_id}"
@@ -179,8 +239,10 @@ def test_voter_registration_cancel_success(client, request_body):
     assert data["Action"][0] == SuccessAction.REGISTRATION_CANCELLED.value
 
 
-def test_voter_registration_cancel_failure(client):
-    """Fail to cancel a voter registration request because it does not exist."""
+def test_voter_registration_cancel_failure(client_with_data):
+    """Fail to cancel a voter registration request because it does not exist.
+    """
+    client = client_with_data
     transaction_id = "invalid-id"
     url = f"/voter/registration/{transaction_id}"
     response = client.delete(url)
