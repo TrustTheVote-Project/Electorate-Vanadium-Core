@@ -170,14 +170,11 @@ def test_voter_registration_check_status_success(client_with_data, request_body)
     assert data["TransactionId"] == transaction_id
 
 
-def test_voter_registration_check_status_failure(client_with_data):
-    """Verify that a voter registration request does NOT exist on the server.
-
-    Note:
-    - The storage has data in it, but the ID is guaranteed not to already exist.
-    """
-    client = client_with_data
-    transaction_id = "invalid-id"
+def test_voter_registration_check_status_failure(client_without_data, request_body):
+    """Verify that a voter registration request does NOT exist on the server."""
+    client = client_without_data
+    body = request_body
+    transaction_id = body["TransactionId"]
     url = f"/voter/registration/{transaction_id}"
     response = client.get(url)
     assert response.status_code == 404
@@ -189,7 +186,7 @@ def test_voter_registration_check_status_failure(client_with_data):
     )
     assert len(data["Error"]) == 1
     assert data["Error"][0]["Name"] == RequestError.IDENTITY_LOOKUP_FAILED.value
-    assert data["TransactionId"] == "invalid-id"
+    assert data["TransactionId"] == transaction_id
 
 
 def test_voter_registration_update_success(client_with_data, request_body):
@@ -209,7 +206,6 @@ def test_voter_registration_update_failure(client_without_data, request_body):
     """Fail to update a voter registration request because it does not exist."""
     client = client_without_data
     body = request_body
-    body["TransactionId"] = "invalid-id"
     transaction_id = body["TransactionId"]
     url = f"/voter/registration/{transaction_id}"
     response = client.put(url, json = body)
@@ -223,7 +219,7 @@ def test_voter_registration_update_failure(client_without_data, request_body):
     )
     assert len(data["Error"]) == 1
     assert data["Error"][0]["Name"] == RequestError.IDENTITY_LOOKUP_FAILED.value
-    assert data["TransactionId"] == "invalid-id"
+    assert data["TransactionId"] == transaction_id
 
 
 def test_voter_registration_cancel_success(client_with_data, request_body):
@@ -239,11 +235,12 @@ def test_voter_registration_cancel_success(client_with_data, request_body):
     assert data["Action"][0] == SuccessAction.REGISTRATION_CANCELLED.value
 
 
-def test_voter_registration_cancel_failure(client_with_data):
+def test_voter_registration_cancel_failure(client_without_data, request_body):
     """Fail to cancel a voter registration request because it does not exist.
     """
-    client = client_with_data
-    transaction_id = "invalid-id"
+    client = client_without_data
+    body = request_body
+    transaction_id = body["TransactionId"]
     url = f"/voter/registration/{transaction_id}"
     response = client.delete(url)
     assert response.status_code == 404
@@ -255,4 +252,4 @@ def test_voter_registration_cancel_failure(client_with_data):
     )
     assert len(data["Error"]) == 1
     assert data["Error"][0]["Name"] == RequestError.IDENTITY_LOOKUP_FAILED.value
-    assert data["TransactionId"] == "invalid-id"
+    assert data["TransactionId"] == transaction_id
