@@ -56,6 +56,28 @@ def request_body(request):
 
 
 @pytest.fixture
+def request_data_1(request_body):
+    """Return the url, body and transaction id of each HTTP request.
+    The URL does not include the transaction ID.
+    """
+    body = request_body
+    transaction_id = body["TransactionId"]
+    url = f"/voter/registration/"
+    return url, body, transaction_id
+
+
+@pytest.fixture
+def request_data_2(request_body):
+    """Return the url, body and transaction id of each HTTP request.
+    The URL does include the transaction ID.
+    """
+    body = request_body
+    transaction_id = body["TransactionId"]
+    url = f"/voter/registration/{transaction_id}"
+    return url, body, transaction_id
+
+
+@pytest.fixture
 def empty_storage():
     """Use a data store that has no contents."""
     def get_storage():
@@ -114,14 +136,12 @@ def client_with_data(app, prefilled_storage, request_body):
 
 # --- Test cases
 
-def test_voter_registration_create_success(client_default, request_body):
+def test_voter_registration_create_success(client_default, request_data_1):
     """Create a voter registration successfully.
     Uses the client provided transaction ID.
     """
     client = client_default
-    body = request_body
-    transaction_id = body["TransactionId"]
-    url = "/voter/registration/"
+    url, body, transaction_id = request_data_1
     response = client.post(url, json = body)
     assert response.status_code == 201
     data = response.json()
@@ -150,12 +170,10 @@ def test_voter_registration_create_without_transaction_id_success(client_with_da
     ) is None
 
 
-def test_voter_registration_create_failure(client_with_data, request_body):
+def test_voter_registration_create_failure(client_with_data, request_data_1):
     """Fail to create a voter registration ID, because it already exists."""
     client = client_with_data
-    body = request_body
-    transaction_id = body["TransactionId"]
-    url = "/voter/registration/"
+    url, body, transaction_id = request_data_1
     response = client.post(url, json = body)
     assert response.status_code == 400
     data = response.json()
@@ -169,24 +187,20 @@ def test_voter_registration_create_failure(client_with_data, request_body):
     assert data["TransactionId"] == None
 
 
-def test_voter_registration_check_status_success(client_with_data, request_body):
+def test_voter_registration_check_status_success(client_with_data, request_data_2):
     """Verify that a voter registration request exists on the server."""
     client = client_with_data
-    body = request_body
-    transaction_id = body["TransactionId"]
-    url = f"/voter/registration/{transaction_id}"
+    url, body, transaction_id = request_data_2
     response = client.get(url)
     assert response.status_code == 200
     data = response.json()
     assert data["TransactionId"] == transaction_id
 
 
-def test_voter_registration_check_status_failure(client_without_data, request_body):
+def test_voter_registration_check_status_failure(client_without_data, request_data_2):
     """Verify that a voter registration request does NOT exist on the server."""
     client = client_without_data
-    body = request_body
-    transaction_id = body["TransactionId"]
-    url = f"/voter/registration/{transaction_id}"
+    url, body, transaction_id = request_data_2
     response = client.get(url)
     assert response.status_code == 404
     data = response.json()
@@ -200,12 +214,10 @@ def test_voter_registration_check_status_failure(client_without_data, request_bo
     assert data["TransactionId"] == transaction_id
 
 
-def test_voter_registration_update_success(client_with_data, request_body):
+def test_voter_registration_update_success(client_with_data, request_data_2):
     """Update an existing voter registration request successfully."""
     client = client_with_data
-    body = request_body
-    transaction_id = body["TransactionId"]
-    url = f"/voter/registration/{transaction_id}"
+    url, body, transaction_id = request_data_2
     response = client.put(url, json = body)
     assert response.status_code == 200
     data = response.json()
@@ -213,12 +225,10 @@ def test_voter_registration_update_success(client_with_data, request_body):
     assert data["Action"][0] == SuccessAction.REGISTRATION_UPDATED.value
 
 
-def test_voter_registration_update_failure(client_without_data, request_body):
+def test_voter_registration_update_failure(client_without_data, request_data_2):
     """Fail to update a voter registration request because it does not exist."""
     client = client_without_data
-    body = request_body
-    transaction_id = body["TransactionId"]
-    url = f"/voter/registration/{transaction_id}"
+    url, body, transaction_id = request_data_2
     response = client.put(url, json = body)
     # Setting 'response.status_code' for 'put' isn't working.
     assert response.status_code == 404
@@ -233,12 +243,10 @@ def test_voter_registration_update_failure(client_without_data, request_body):
     assert data["TransactionId"] == transaction_id
 
 
-def test_voter_registration_cancel_success(client_with_data, request_body):
+def test_voter_registration_cancel_success(client_with_data, request_data_2):
     """Cancel an existing voter registration request successfully."""
     client = client_with_data
-    body = request_body
-    transaction_id = body["TransactionId"]
-    url = f"/voter/registration/{transaction_id}"
+    url, body, transaction_id = request_data_2
     response = client.delete(url)
     assert response.status_code == 200
     data = response.json()
@@ -246,13 +254,11 @@ def test_voter_registration_cancel_success(client_with_data, request_body):
     assert data["Action"][0] == SuccessAction.REGISTRATION_CANCELLED.value
 
 
-def test_voter_registration_cancel_failure(client_without_data, request_body):
+def test_voter_registration_cancel_failure(client_without_data, request_data_2):
     """Fail to cancel a voter registration request because it does not exist.
     """
     client = client_without_data
-    body = request_body
-    transaction_id = body["TransactionId"]
-    url = f"/voter/registration/{transaction_id}"
+    url, body, transaction_id = request_data_2
     response = client.delete(url)
     assert response.status_code == 404
     data = response.json()
