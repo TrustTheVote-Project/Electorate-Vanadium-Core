@@ -36,23 +36,15 @@ VOTER_RECORDS_REQUEST_TESTS = [
 #
 # - The application fixture is shared. To keep each test independent of the
 #   others, storage fixtures replace the application data storage on every test.
+#   The one exception is that to test the storage itself at least one test needs
+#   to not use the fixture storage fixtures. This modifies the original app, so
+#   an application fixture with function sope is used just for that test.
 #   Currently no other state on the application is changing.
 #
 # - The storage fixtures are FastAPI dependency overrides on the application
 #   database. Unlike the application database they do *not* need to have a
 #   dependency on the application since they don't, and *shouldn't*, touch
 #   'app.state'.
-
-@pytest.fixture(scope = "module")
-def app():
-    app = application()
-    return app
-
-
-@pytest.fixture
-def client(app):
-    client = TestClient(app)
-    return client
 
 
 @pytest.fixture(params = VOTER_RECORDS_REQUEST_TESTS)
@@ -83,6 +75,25 @@ def prefilled_storage(request_body):
     return get_storage
 
 
+@pytest.fixture(scope = "module")
+def app():
+    app = application()
+    return app
+
+
+@pytest.fixture(scope = "function")
+def app_ephemeral():
+    app = application()
+    return app
+
+
+@pytest.fixture
+def client_default(app_ephemeral):
+    """Client that tests application data store."""
+    client = TestClient(app_ephemeral)
+    return client
+
+
 @pytest.fixture
 def client_without_data(app, empty_storage):
     """Client that overrides app storage to use a new empty data store."""
@@ -103,11 +114,11 @@ def client_with_data(app, prefilled_storage, request_body):
 
 # --- Test cases
 
-def test_voter_registration_create_success(client_without_data, request_body):
+def test_voter_registration_create_success(client_default, request_body):
     """Create a voter registration successfully.
     Uses the client provided transaction ID.
     """
-    client = client_without_data
+    client = client_default
     body = request_body
     transaction_id = body["TransactionId"]
     url = "/voter/registration/"
