@@ -1,7 +1,7 @@
 import pytest
 from pytest_mock import mocker
 
-from vanadium.app.database import MemoryDataStore
+from vanadium.app.storage import MemoryDataStore
 from vanadium.utils import UniqueIds
 
 

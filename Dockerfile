@@ -7,7 +7,7 @@ RUN pip install --no-cache-dir -r ./requirements.txt
 
 COPY src/electos/vanadium/api ./api
 COPY src/electos/vanadium/app ./app
-COPY src/electos/vanadium/model ./model
+COPY src/electos/vanadium/models ./models
 RUN chmod -R ugo+rx .
 
 FROM base AS runapp

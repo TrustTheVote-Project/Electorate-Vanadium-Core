@@ -1,7 +1,7 @@
 from fastapi import Depends, Request
 
-from vanadium.app.database import MemoryDataStore
-from vanadium.app.resource.base import get_application
+from vanadium.app.resources.base import get_application
+from vanadium.app.storage import MemoryDataStore
 
 
 _storage = None
