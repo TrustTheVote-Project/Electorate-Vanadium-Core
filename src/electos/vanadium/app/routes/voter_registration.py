@@ -3,8 +3,8 @@ from typing import Optional, Union
 from fastapi import APIRouter, Depends, Response, status
 from pydantic import BaseModel
 
-from vanadium.app.resource import storage as storage_resource
-from vanadium.model import (
+from vanadium.app.resources import storage as storage_resource
+from vanadium.models import (
     Error,
     RequestAcknowledgement,     # VoterRecordsResponse sub-class
     RequestError,

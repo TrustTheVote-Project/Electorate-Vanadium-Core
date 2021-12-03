@@ -6,7 +6,7 @@ from contextlib import nullcontext as raises_none
 import pytest
 from pydantic import ValidationError
 
-from vanadium.model import *
+from vanadium.models import *
 
 from tests.conftest import Raises
 

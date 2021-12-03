@@ -5,10 +5,10 @@ from fastapi.testclient import TestClient
 
 import pytest
 
-from vanadium.app.database import MemoryDataStore
 from vanadium.app.main import application
-from vanadium.app.resource import storage
-from vanadium.model import (
+from vanadium.app.resources import storage
+from vanadium.app.storage import MemoryDataStore
+from vanadium.models import (
     RequestError,
     RequestForm,
     RequestMethod,

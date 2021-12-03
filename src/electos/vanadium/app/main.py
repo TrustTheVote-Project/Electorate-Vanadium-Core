@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 
-from vanadium.app.resource import (
+from vanadium.app.resources import (
     storage
 )
-from vanadium.app.route import (
+from vanadium.app.routes import (
     voter_registration,
 )
 

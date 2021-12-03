@@ -1,6 +1,6 @@
 from typing import Any, Dict, List, Set, Tuple
 
-from vanadium.model import ExternalIdentifier
+from vanadium.models import ExternalIdentifier
 from vanadium.utils import UniqueIds
 
 

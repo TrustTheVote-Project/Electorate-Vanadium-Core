@@ -6,7 +6,7 @@ build-backend = "poetry.masonry.api"
 [tool.poetry]
 
 name = "electos-vanadium-core"
-version = "0.0.3"
+version = "0.0.3-dev"
 description = "Web service for ElectOS voter data warehouse"
 authors = ["Ion Y <ion@osetinstitute.org>"]
 packages = [

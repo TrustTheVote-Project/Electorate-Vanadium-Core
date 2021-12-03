@@ -8,5 +8,5 @@ directory = .local/coverage/html
 omit =
     */.local/*
     */.venv/*
-    src/electos/vanadium/app/route/_test.py 
+    src/electos/vanadium/app/routes/_test.py 
     test/vanadium/tests/routes/test_route_test.py
