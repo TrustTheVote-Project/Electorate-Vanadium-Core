@@ -18,7 +18,7 @@ from typing import Literal, List, Optional, Union
 
 from pydantic import AnyUrl, Extra, Field
 
-from .base import SchemaModel
+from ..base import SchemaModel
 from .enumerations import *
 
 

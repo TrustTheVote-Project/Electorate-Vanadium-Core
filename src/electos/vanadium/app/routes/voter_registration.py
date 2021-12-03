@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, Response, status
 from pydantic import BaseModel
 
 from vanadium.app.resources import storage as storage_resource
-from vanadium.models import (
+from vanadium.models.nist.vri import (
     Error,
     RequestAcknowledgement,     # VoterRecordsResponse sub-class
     RequestError,
