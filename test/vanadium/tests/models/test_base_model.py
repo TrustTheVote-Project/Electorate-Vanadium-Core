@@ -3,7 +3,7 @@ from typing import Literal, Optional
 
 import pytest
 
-from vanadium.models.base import SchemaModel
+from vanadium.models.nist.base import SchemaModel
 
 from tests.conftest import Raises
 

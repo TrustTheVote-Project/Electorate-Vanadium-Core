@@ -8,7 +8,7 @@ import pytest
 from vanadium.app.main import application
 from vanadium.app.resources import storage
 from vanadium.app.storage import MemoryDataStore
-from vanadium.models import (
+from vanadium.models.nist.vri import (
     RequestError,
     RequestForm,
     RequestMethod,
